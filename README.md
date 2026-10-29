@@ -1,13 +1,14 @@
 # Dathoccodientu — trang dự án drone
 
 Web tĩnh (HTML + CSS + JS thuần), không cần build. Deploy lên Vercel.
+Mọi file (html, ảnh .webp, firmware .zip, style.css, site.js) nằm chung ở ngoài cùng, không có thư mục con.
 
 ## Thêm phiên bản mới (VD: V5)
 1. Copy `v4.html` → `v5.html`, sửa nội dung (các khung `todo`).
-2. Mở `assets/site.js`, thêm 1 dòng vào `projects`:
+2. Mở `site.js`, thêm 1 dòng vào `projects`:
    `{ href: "v5.html", title: "Quadcopter V5", status: "wip" },`
 3. Thêm dòng vào `log` (nhật ký) nếu muốn.
-4. Bỏ firmware vào `downloads/FC_UAV_V5.zip`.
+4. Upload firmware `FC_UAV_V5.zip` lên ngoài cùng repo.
 5. `git push` — Vercel tự deploy lại.
 
 Menu trái, trang chủ, nhật ký tự cập nhật theo `site.js`.

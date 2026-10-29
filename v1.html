@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quadcopter tự cân bằng V1 — STM32F405 + ICM20602</title>
 <meta name="description" content="Drone F450 tự chế bản V1: STM32F405 + ICM-20602, chỉ tự cân bằng, firmware tự viết trên STM32duino.">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header id="top"></header>
@@ -18,8 +18,8 @@
     <p>Bản này chỉ dùng một cảm biến duy nhất là ICM-20602. Máy giữ được thăng bằng và bay theo cần điều khiển, nhưng độ cao hoàn toàn do tay ga người lái — buông ga ra là nó tụt. Đây là bản nên làm trước để hiểu vòng điều khiển cơ bản, trước khi thêm cảm biến áp suất ở <a href="v2.html">bản V2</a>.</p>
 
     <div class="photos">
-      <figure><img src="assets/img/drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
-      <figure><img src="assets/img/fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
+      <figure><img src="drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
+      <figure><img src="fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
     </div>
     <p class="tiktok-links">▶ Xem video trên TikTok: <a href="https://www.tiktok.com/@dathoccodientu.03/video/7663343187334794504" target="_blank" rel="noopener">video 1</a> · <a href="https://www.tiktok.com/@dathoccodientu.03/video/7666671470998801682" target="_blank" rel="noopener">video 2</a></p>
 
@@ -60,11 +60,11 @@
     <h2>Tài liệu &amp; mã nguồn</h2>
     <ul class="downloads">
       <li><a href="so-do-v1.html">Sơ đồ đấu dây bản V1</a> — bảng chân từng cảm biến, ESC, LED và bản đồ chân F405</li>
-      <li><a href="downloads/FC_F405_V1.zip">FC_F405_V1.zip</a> — toàn bộ firmware bản V1, kèm sketch <code>accel_offset_calibration</code> để đo offset gia tốc kế</li>
+      <li><a href="FC_F405_V1.zip">FC_F405_V1.zip</a> — toàn bộ firmware bản V1, kèm sketch <code>accel_offset_calibration</code> để đo offset gia tốc kế</li>
     </ul>
   </main>
 </div>
 <footer id="foot"></footer>
-<script src="assets/site.js"></script>
+<script src="site.js"></script>
 </body>
 </html>

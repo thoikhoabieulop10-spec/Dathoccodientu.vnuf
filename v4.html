@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quadcopter V4 — STM32F405 + GPS M10 + la bàn IST8310, giữ vị trí bằng GPS</title>
 <meta name="description" content="Drone F450 tự chế bản V4: GPS GEP-M10 và la bàn IST8310, giữ vị trí bằng GPS, giữ hướng mũi, telemetry ELRS về tay cầm.">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header id="top"></header>
@@ -18,8 +18,8 @@
     <p>Phần cứng giữ nguyên như <a href="v3.html">bản V3</a> — <b>GPS GEP-M10</b> (u-blox M10) và <b>la bàn IST8310</b>, cùng một sơ đồ chân. V4 sửa lại phần mềm sau các chuyến bay thử của V3: đọc GPS bằng gói nhị phân UBX thay cho NMEA, giữ độ cao kéo về đúng mốc, hiệu chuẩn la bàn lại, và tune xong vòng giữ vị trí. Bộ code có thêm hai sketch kiểm tra để hiệu chuẩn từng bộ phận.</p>
 
     <div class="photos">
-      <figure><img src="assets/img/drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
-      <figure><img src="assets/img/fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
+      <figure><img src="drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
+      <figure><img src="fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
     </div>
 
     <h2>Khác gì so với bản V3</h2>
@@ -110,12 +110,12 @@
     <h2>Tài liệu &amp; mã nguồn</h2>
     <ul class="downloads">
       <li><a href="so-do-v4.html">Sơ đồ đấu dây bản V4</a> — bảng chân GPS, la bàn, ELRS, ESC, 3 LED</li>
-      <li><a href="downloads/FC_F405_M10_HTD.zip">FC_F405_M10_HTD.zip</a> — firmware bản V4, kèm sketch <code>F405_drone_test</code> và <code>F405_IST8310_M10_test</code></li>
+      <li><a href="FC_F405_M10_HTD.zip">FC_F405_M10_HTD.zip</a> — firmware bản V4, kèm sketch <code>F405_drone_test</code> và <code>F405_IST8310_M10_test</code></li>
       <li><a href="v3.html">Trang bản V3</a> — bản GPS đầu tiên</li>
     </ul>
   </main>
 </div>
 <footer id="foot"></footer>
-<script src="assets/site.js"></script>
+<script src="site.js"></script>
 </body>
 </html>

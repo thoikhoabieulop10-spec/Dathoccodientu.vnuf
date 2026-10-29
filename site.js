@@ -37,7 +37,7 @@ const SITE = {
     { date: "",           text: "Đăng bản V1: STM32F405 + ICM-20602, chỉ tự cân bằng." },
   ],
 
-  /* Ảnh linh kiện — file nằm trong assets/img/.
+  /* Ảnh linh kiện — file nằm trong .
    * Trong trang, đặt  <div class="parts" data-parts="frame,motor,..."></div>
    * là tự hiện khung ảnh. Thêm linh kiện mới: thêm 1 dòng ở đây.        */
   parts: {
@@ -108,7 +108,7 @@ const SITE = {
 
   document.querySelectorAll(".parts[data-parts]").forEach((box) => {
     box.innerHTML = box.dataset.parts.split(",").map((k) => SITE.parts[k.trim()]).filter(Boolean)
-      .map((p) => `<figure><img src="assets/img/${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">
+      .map((p) => `<figure><img src="${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">
         <figcaption><b>${p.name}</b><span>${p.note}</span></figcaption></figure>`).join("");
   });
 
