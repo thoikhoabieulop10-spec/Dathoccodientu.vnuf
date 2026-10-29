@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/quadcopter",           "destination": "/v1",       "permanent": true },
+    { "source": "/quadcopter_v2",        "destination": "/v2",       "permanent": true },
+    { "source": "/so_do_dau_day_v1",     "destination": "/so-do-v1", "permanent": true },
+    { "source": "/so_do_dau_day_v2",     "destination": "/so-do-v2", "permanent": true },
+    { "source": "/blog",                 "destination": "/nhat-ky",  "permanent": true },
+    { "source": "/lien_he",              "destination": "/lien-he",  "permanent": true }
+  ]
+}

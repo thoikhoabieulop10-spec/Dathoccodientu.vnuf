@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sơ đồ đấu dây drone F450 bản V1 — STM32F405, ICM-20602, PPM</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <p class="crumbs"><a href="v1.html">← Dự án V1</a> · <a href="so-do-v2.html">Sơ đồ bản V2</a></p>
+    <h1>Sơ đồ đấu dây — bản V1</h1>
+    <p class="sub">STM32F405RGT6 · ICM-20602 · FS-iA6B (PPM) · BLE DL-20 · 4× ESC 40A</p>
+
+    <h2>ICM-20602 — gyro + accel · SPI · 3.3V</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân cảm biến</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>VCC</td><td>3.3V</td><td>KHÔNG cắm 5V</td></tr>
+      <tr><td>GND</td><td>GND</td><td></td></tr>
+      <tr><td>SCK / SCL</td><td>PA5</td><td>SPI clock</td></tr>
+      <tr><td>SDO / AD0</td><td>PA6</td><td>MISO</td></tr>
+      <tr><td>SDI / SDA</td><td>PA7</td><td>MOSI</td></tr>
+      <tr><td>CS / nCS</td><td>PA4</td><td>chip select</td></tr>
+    </table></div>
+
+    <h2>Bộ thu FS-iA6B — PPM · 5V</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân bộ thu</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>PPM signal</td><td>PA0</td><td>một dây gộp 8 kênh</td></tr>
+      <tr><td>5V</td><td>5V</td><td></td></tr>
+      <tr><td>GND</td><td>GND</td><td></td></tr>
+    </table></div>
+
+    <h2>Module BLE DL-20 — USART1 · tuỳ chọn</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân module</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>TX</td><td>PA10</td><td>UART1_RX (nối chéo)</td></tr>
+      <tr><td>RX</td><td>PA9</td><td>UART1_TX</td></tr>
+      <tr><td>VCC</td><td>5V / 3.3V</td><td>theo module</td></tr>
+      <tr><td>GND</td><td>GND</td><td>bắt buộc chung GND với bo</td></tr>
+    </table></div>
+
+    <h2>4× ESC 40A — PWM 250Hz · TIM3</h2>
+    <div class="tbl"><table>
+      <tr><th>ESC</th><th>Chân F405</th><th>Vị trí motor</th></tr>
+      <tr><td>ESC 1 signal</td><td>PC6</td><td>trước-phải · CCW</td></tr>
+      <tr><td>ESC 2 signal</td><td>PC7</td><td>sau-phải · CW</td></tr>
+      <tr><td>ESC 3 signal</td><td>PC8</td><td>sau-trái · CCW</td></tr>
+      <tr><td>ESC 4 signal</td><td>PC9</td><td>trước-trái · CW</td></tr>
+      <tr><td>ESC GND (đen)</td><td>GND</td><td>cả 4 ESC</td></tr>
+      <tr><td>ESC BEC 5V (đỏ)</td><td>5V</td><td>CHỈ 1 ESC nối</td></tr>
+    </table></div>
+    <div class="warn">Chỉ để MỘT ESC nối dây đỏ 5V vào board. Ba ESC còn lại cắt/rút dây đỏ, chỉ giữ dây trắng (signal) và đen (GND) — nếu không các BEC đánh nhau.</div>
+
+    <h2>2× LED — qua điện trở 100Ω</h2>
+    <div class="tbl"><table>
+      <tr><th>LED</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>LED xanh</td><td>PB3</td><td>báo ARMED</td></tr>
+      <tr><td>LED đỏ</td><td>PB4</td><td>báo chờ/lỗi</td></tr>
+    </table></div>
+
+    <div class="note">Nhắc trước khi cấp nguồn: ICM dùng 3.3V (5V sẽ cháy). Mọi GND phải chung một điểm. TX của thiết bị nối chéo vào RX của bo. Không vừa cắm USB vừa nối 5V BEC khi test trên bàn.</div>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

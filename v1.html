@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quadcopter tự cân bằng V1 — STM32F405 + ICM20602</title>
+<meta name="description" content="Drone F450 tự chế bản V1: STM32F405 + ICM-20602, chỉ tự cân bằng, firmware tự viết trên STM32duino.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <h1>Quadcopter tự cân bằng V1</h1>
+    <p class="sub">Bản đầu: chỉ tự cân bằng, chưa có giữ độ cao</p>
+
+    <p>Bản này chỉ dùng một cảm biến duy nhất là ICM-20602. Máy giữ được thăng bằng và bay theo cần điều khiển, nhưng độ cao hoàn toàn do tay ga người lái — buông ga ra là nó tụt. Đây là bản nên làm trước để hiểu vòng điều khiển cơ bản, trước khi thêm cảm biến áp suất ở <a href="v2.html">bản V2</a>.</p>
+
+    <div class="photos">
+      <figure><img src="assets/img/drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
+      <figure><img src="assets/img/fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
+    </div>
+    <p class="tiktok-links">▶ Xem video trên TikTok: <a href="https://www.tiktok.com/@dathoccodientu.03/video/7663343187334794504" target="_blank" rel="noopener">video 1</a> · <a href="https://www.tiktok.com/@dathoccodientu.03/video/7666671470998801682" target="_blank" rel="noopener">video 2</a></p>
+
+    <h2>Phần khung và động lực</h2>
+    <div class="parts" data-parts="frame,motor,prop,damping,tx,ia6b,icm"></div>
+    <div class="tbl"><table>
+      <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú</th></tr>
+      <tr><td>Khung F450</td><td>1</td><td>Cấu hình chữ X, khoảng cách trục 450mm</td></tr>
+      <tr><td>Động cơ DJI 2212 920KV</td><td>4</td><td>2 chiều thuận, 2 chiều nghịch</td></tr>
+      <tr><td>ESC 40A</td><td>4</td><td>Nhớ hiệu chỉnh cả 4 cái cùng lúc trước khi bay</td></tr>
+      <tr><td>Cánh quạt</td><td>4</td><td>Nên dùng 8045 với pin 4S</td></tr>
+      <tr><td>Pin LiPo 4S 2200mAh</td><td>1</td><td>14,8V, đầu XT60</td></tr>
+      <tr><td>Tay điều khiển FlySky FS-i6</td><td>1</td><td>6 kênh, băng tần 2.4GHz</td></tr>
+      <tr><td>Bộ thu FlySky iA6B</td><td>1</td><td>Xuất PPM 8 kênh — chỉ một dây tín hiệu về bo, cắm ở chân PPM</td></tr>
+      <tr><td>Module BLE DL-20</td><td>1</td><td>Tuỳ chọn — gửi số liệu về web tune PID qua Bluetooth</td></tr>
+    </table></div>
+
+    <h3>Kết nối bộ thu</h3>
+    <p>Bộ thu iA6B cắm vào bo bằng một dây PPM duy nhất, gộp 8 kênh trên cùng một đường tín hiệu thay vì kéo riêng từng dây servo. Cổng PPM nằm ở hàng chân cạnh cổng nạp trên bo.</p>
+    <p>Tay FS-i6 xuất xưởng chỉ mở 6 kênh; muốn dùng đủ 8 thì phải nạp lại firmware mở khoá 10 kênh cho tay phát. Nếu bạn chưa làm bước đó, hai kênh cuối trong luồng PPM sẽ luôn nằm im ở giá trị mặc định — không gây lỗi gì, chỉ là không điều khiển được.</p>
+
+    <h3>Thứ tự lắp và hiệu chỉnh</h3>
+    <p>Đừng gắn cánh quạt cho tới bước cuối. Trình tự an toàn: nạp firmware → hiệu chỉnh IMU khi đặt máy nằm phẳng tuyệt đối → hiệu chỉnh tay điều khiển → hiệu chỉnh ESC → kiểm tra chiều quay từng động cơ → cuối cùng mới lắp cánh và thử ga nhẹ ở nơi trống.</p>
+
+    <h2>Firmware</h2>
+    <p>Code tự viết trên STM32duino, không dùng Betaflight hay ArduPilot. Dự án chia thành nhiều tab cho dễ đọc: IMU đọc cảm biến, EKF ước lượng trạng thái, PID tính lệnh điều khiển, Motors trộn ra bốn động cơ, Receiver giải mã PPM. Toàn bộ thông số cần chỉnh nằm gọn trong <code>Config.h</code>.</p>
+    <p>Cấu trúc điều khiển theo kiểu tầng. Cần điều khiển đặt ra góc nghiêng mong muốn → PID góc tính ra tốc độ quay mong muốn → PID tốc độ xuất ra hỗn hợp bốn động cơ. Góc nghiêng lấy từ bộ lọc Kalman trộn con quay hồi chuyển (mượt nhưng trôi) với gia tốc kế (nhiễu nhưng không trôi).</p>
+
+    <h3>Lọc rung và tinh chỉnh</h3>
+    <p>Tín hiệu con quay hồi chuyển đi qua bộ lọc biquad bậc hai cắt ở 60Hz — đủ sạch để PID không bị rung đánh lừa, mà vẫn không trễ đến mức dao động. Nếu máy rung ở một tần số cố định do cánh quạt, có thể bật thêm bộ lọc chặn dải hẹp trong <code>Config.h</code>. Firmware kèm sẵn chế độ ghi lại dao động thô để bạn tìm ra đúng tần số cần cắt thay vì đoán mò.</p>
+    <p>Có cả phần gửi số liệu qua <b>module BLE DL-20</b> (PA9/PA10), 20 lần mỗi giây: góc nghiêng, tốc độ quay, độ cao, điện áp pin. Trang web tune PID kết nối Bluetooth để xem số liệu theo thời gian thực và sửa hệ số PID ngay khi đang bay thử, không cần rút dây cắm lại USB. Đây là thứ tiết kiệm nhiều thời gian nhất khi tune. Bật/tắt bằng <code>TELEMETRY_ENABLE</code> trong <code>Config.h</code>.</p>
+    <p>Cần điều khiển dùng đường cong luỹ tiến chứ không tuyến tính: quanh giữa cần thì rất nhẹ để lái vi chỉnh, đẩy hết cần thì cho tới 55 độ nghiêng để phanh gấp khi sắp đâm.</p>
+
+    <div class="warn">Code V1 có sẵn phần giữ độ cao bật bằng <b>công tắc kênh 5</b>, nhưng phần này chỉ chạy được khi có lắp BMP388. Bản V1 không lắp BMP388 thì <b>luôn để công tắc kênh 5 ở nấc dưới</b>.</div>
+    <div class="note">Mọi thông số cần tinh chỉnh đều gom vào một khối ở đầu file, có ghi chú tiếng Việt cho từng hằng số. Phần còn lại không cần đụng tới khi tune.</div>
+    <div class="warn"><b>Tune vòng trong trước.</b> PID tốc độ quay phải chạy ổn đã rồi mới đến PID góc. Và tháo cánh quạt cho tới khi mọi bài kiểm tra trên bàn đều đạt.</div>
+
+    <h2>Tài liệu &amp; mã nguồn</h2>
+    <ul class="downloads">
+      <li><a href="so-do-v1.html">Sơ đồ đấu dây bản V1</a> — bảng chân từng cảm biến, ESC, LED và bản đồ chân F405</li>
+      <li><a href="downloads/FC_F405_V1.zip">FC_F405_V1.zip</a> — toàn bộ firmware bản V1, kèm sketch <code>accel_offset_calibration</code> để đo offset gia tốc kế</li>
+    </ul>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

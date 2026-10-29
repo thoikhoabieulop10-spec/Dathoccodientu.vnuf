@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quadcopter V3 — STM32F405 + GPS M10 + la bàn IST8310</title>
+<meta name="description" content="Drone F450 tự chế bản V3: lần đầu dùng GPS GEP-M10 và la bàn IST8310 để giữ vị trí ngoài trời, giữ hướng mũi, telemetry ELRS.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <h1>Quadcopter V3</h1>
+    <p class="sub">Lần đầu lên GPS và la bàn: giữ vị trí ngoài trời, giữ hướng mũi</p>
+
+    <p>Bản V2 giữ được độ cao nhưng vẫn trôi ngang theo gió. Bản này thêm <b>GPS GEP-M10</b> (u-blox M10) và <b>la bàn IST8310</b> để drone giữ nguyên vị trí ngoài trời: thả cần là nó đứng yên một chỗ. La bàn cho biết mũi drone đang chỉ hướng nào — thiếu nó thì GPS biết drone đang trôi về phía Bắc nhưng không biết phải nghiêng sang bên nào để hãm.</p>
+    <p>V3 là bản <b>đặt nền</b>: phần cứng, chân cắm, công tắc và đèn báo đã giống hệt bản cuối. Các hệ số giữ vị trí và giữ độ cao còn để ở mức an toàn, chưa tune xong — phần đó hoàn thiện ở <a href="v4.html">bản V4</a>. Nếu bạn làm mới, nên nạp thẳng V4.</p>
+
+    <div class="photos">
+      <figure><img src="assets/img/drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
+      <figure><img src="assets/img/fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
+    </div>
+
+    <h2>Khác gì so với bản V2</h2>
+    <div class="tbl"><table>
+      <tr><th>Hạng mục</th><th>V2</th><th>V3</th></tr>
+      <tr><td>Cảm biến</td><td>ICM-20602, BMP388</td><td>ICM-20602, BMP388, GPS GEP-M10, la bàn IST8310</td></tr>
+      <tr><td>Giữ vị trí</td><td>Không — trôi theo gió</td><td>Có, bằng GPS, cần ngoài trời</td></tr>
+      <tr><td>Giữ hướng mũi</td><td>Không</td><td>Có, bằng la bàn trộn con quay</td></tr>
+            <tr><td>Telemetry về tay cầm</td><td>Góc, độ cao, chế độ bay</td><td>Thêm toạ độ, số vệ tinh, tốc độ GPS</td></tr>
+      <tr><td>Chế độ bay (kênh 7)</td><td>2 chế độ: STAB, ALT</td><td>3 nấc: STAB, ALT, POS</td></tr>
+      <tr><td>Đèn báo</td><td>2 LED</td><td>3 LED — thêm đèn GPS ở PB5</td></tr>
+      <tr><td>UART1 (PA9/PA10)</td><td>Bỏ trống</td><td>GPS</td></tr>
+      <tr><td>Chân dùng thêm</td><td>—</td><td>PB6/PB7 (I2C la bàn), PB5 (LED GPS)</td></tr>
+    </table></div>
+
+    <h2>Linh kiện</h2>
+    <div class="parts" data-parts="frame,motor,prop,damping,pocket,elrs,icm,bmp,gps,mag"></div>
+    <p>Khung, motor, ESC, pin giống bản V1 (F450, 2212 920KV, ESC 40A, 4S 2200mAh). Phần điện tử:</p>
+    <div class="tbl"><table>
+      <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú</th></tr>
+      <tr><td>Bo STM32F405</td><td>1</td><td>Firmware tự viết trên STM32duino</td></tr>
+      <tr><td>ICM-20602</td><td>1</td><td>Gyro + gia tốc, SPI</td></tr>
+      <tr><td>BMP388</td><td>1</td><td>Áp suất — giữ độ cao, che bằng mút mỏng</td></tr>
+      <tr><td>GPS GEPRC GEP-M10</td><td>1</td><td>u-blox M10, 115200 baud — FC tự dò baud và cấu hình lại mỗi lần khởi động</td></tr>
+      <tr><td>La bàn IST8310</td><td>1</td><td>I2C, module riêng — đặt xa dây nguồn và motor</td></tr>
+      <tr><td>Tay điều khiển RadioMaster Pocket</td><td>1</td><td>Phát ELRS 2.4GHz — thay cho FS-i6 (FS-i6 không phát được ELRS)</td></tr>
+      <tr><td>Bộ thu ExpressLRS</td><td>1</td><td>CRSF 420000 baud, cần cả 2 dây để có telemetry</td></tr>
+      <tr><td>LED + điện trở 100Ω</td><td>3</td><td>Xanh, đỏ, đèn GPS</td></tr>
+    </table></div>
+    <p>Sơ đồ đấu dây dùng chung với V4: <a href="so-do-v4.html">Sơ đồ đấu dây V3 / V4</a>.</p>
+
+    <h2>Ba chế độ bay — công tắc 3 nấc kênh 7</h2>
+    <div class="tbl"><table>
+      <tr><th>Nấc</th><th>Chế độ</th><th>Tay cầm hiển thị</th></tr>
+      <tr><td>Dưới (&lt; 1250)</td><td>Tự cân bằng, ga do người lái</td><td><code>STAB</code></td></tr>
+      <tr><td>Giữa (1250–1750)</td><td>Giữ độ cao bằng baro</td><td><code>ALT</code></td></tr>
+      <tr><td>Trên (&gt; 1750)</td><td>Giữ độ cao + giữ vị trí bằng GPS</td><td><code>POS</code> — hoặc <code>POS!</code> nếu GPS/la bàn chưa sẵn sàng</td></tr>
+    </table></div>
+    <p>Kênh 5 là công tắc ARM. Đèn GPS ở PB5: tắt = chưa có dữ liệu GPS, nháy chậm = có nhưng chưa đủ điều kiện, sáng liên tục = sẵn sàng giữ vị trí (≥ 8 vệ tinh, HDOP &lt; 2,0, đã chốt điểm gốc, la bàn khoẻ).</p>
+
+    <h2>Firmware</h2>
+    <h3>Đọc GPS kiểu NMEA</h3>
+    <p>V3 đọc hai câu NMEA chữ là GGA (vị trí, số vệ tinh, HDOP) và RMC (vận tốc Doppler), có kiểm checksum, chặn trường rỗng và chặn bước nhảy vị trí. Hàm đọc GPS mỗi vòng chỉ lấy tối đa 48 byte để vòng điều khiển 4ms không bao giờ bị kéo dài.</p>
+    <p>Nhược điểm của NMEA: câu RMC bỏ trống hướng di chuyển khi drone đi rất chậm — đúng lúc giữ vị trí cần vận tốc nhất. V4 sửa chỗ này bằng cách đọc gói nhị phân UBX-NAV-PVT.</p>
+
+    <h3>Giữ vị trí — đang ở bước 1</h3>
+    <p>Trong file đang để <code>PPosition 0</code> và <code>IVelocityHoriz 0</code>, chỉ có <code>PVelocityHoriz 0.08</code>. Nghĩa là drone chỉ <b>hãm lại khi thả cần</b>, chưa tự kéo về điểm cũ. Góc nghiêng GPS được ra lệnh giới hạn 8 độ.</p>
+
+    <h3>Giữ độ cao — chỉ giữ vận tốc đứng bằng 0</h3>
+    <p><code>PAltitude = 0</code>: drone giữ vận tốc lên xuống bằng 0 chứ không kéo về đúng độ cao cũ, và cần ga không có tác dụng khi đang giữ độ cao. Kèm <code>IVelocityVertical 0.005</code> rất nhỏ nên khi pin sụt áp drone sẽ từ từ hạ xuống. V4 đã thêm PID độ cao và sửa hệ số này.</p>
+
+    <h3>La bàn và giữ hướng</h3>
+    <p>Giống V4: la bàn đọc 25 lần/giây, bù nghiêng, trộn với con quay; thả cần yaw thì chốt hướng mũi. Số hiệu chuẩn trong V3 là mô hình chéo đơn giản và dấu bù nghiêng pitch là <code>(+1)</code> — sau này đo lại thấy lệch gần 20 độ, V4 đã đổi sang <code>(-1)</code>.</p>
+
+    <div class="warn"><b>Hiệu chuẩn la bàn lại</b> trước khi bay nếu khung, vị trí la bàn hay đường dây nguồn của bạn khác của mình — số trong <code>Config.h</code> mục [9] chỉ đúng với drone của mình. Chưa hiệu chuẩn thì đặt <code>MAG_CAL_DONE 0</code>: drone sẽ không giữ hướng và không giữ vị trí. Dùng sketch <code>F405_IST8310_M10_test</code> trong bộ code V4 để hiệu chuẩn.</div>
+
+    <h2>Tài liệu &amp; mã nguồn</h2>
+    <ul class="downloads">
+      <li><a href="so-do-v4.html">Sơ đồ đấu dây V3 / V4</a> — chân GPS, la bàn, ELRS, ESC, 3 LED</li>
+      <li><a href="downloads/FC_F405_V3.zip">FC_F405_V3.zip</a> — firmware bản V3</li>
+      <li><a href="v4.html">Trang bản V4</a> — bản hoàn thiện, nên dùng bản này</li>
+    </ul>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

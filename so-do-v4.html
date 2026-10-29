@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sơ đồ đấu dây drone F450 bản V3 / V4 — STM32F405, GPS M10, IST8310, ExpressLRS</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <p class="crumbs"><a href="v3.html">← Dự án V3</a> · <a href="v4.html">Dự án V4</a> · <a href="so-do-v2.html">Sơ đồ bản V2</a></p>
+    <h1>Sơ đồ đấu dây — bản V3 / V4</h1>
+    <p class="sub">STM32F405RGT6 · ICM-20602 · BMP388 · GPS GEP-M10 · la bàn IST8310 · ExpressLRS (CRSF) · 4× ESC 40A</p>
+
+    <h2>ICM-20602 + BMP388 — SPI1 · 3.3V</h2>
+    <p>Giống hệt bản V2: dùng chung SCK PA5, MISO PA6, MOSI PA7; chip select ICM ở <b>PA4</b>, BMP388 ở <b>PA3</b>. Cả hai cấp 3.3V, KHÔNG cắm 5V.</p>
+
+    <h2>GPS GEP-M10 — USART1 · 115200 baud</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân GPS</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>TX</td><td>PA10</td><td>USART1_RX (nối chéo)</td></tr>
+      <tr><td>RX</td><td>PA9</td><td>USART1_TX — cần nối để FC tự cấu hình lại module</td></tr>
+      <tr><td>VCC</td><td>5V</td><td></td></tr>
+      <tr><td>GND</td><td>GND</td><td></td></tr>
+    </table></div>
+
+    <h2>La bàn IST8310 — I2C1 · 100kHz</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân la bàn</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>SCL</td><td>PB6</td><td></td></tr>
+      <tr><td>SDA</td><td>PB7</td><td></td></tr>
+      <tr><td>3V3</td><td>3.3V</td><td>module có chân ghi 3V3</td></tr>
+      <tr><td>GND</td><td>GND</td><td></td></tr>
+    </table></div>
+    <div class="note">Đặt la bàn càng xa dây nguồn chính, ESC và pin càng tốt (thường gắn trên cột cùng GPS). Dùng menu <code>x</code> của <code>F405_drone_test</code> để đo motor làm lệch la bàn bao nhiêu.</div>
+
+    <h2>Bộ thu ExpressLRS — CRSF · UART4 · 420000 baud · 5V</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân receiver</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>TX</td><td>PA1</td><td>UART4_RX — dây tín hiệu chính</td></tr>
+      <tr><td>RX</td><td>PA0</td><td>UART4_TX — <b>bắt buộc</b> ở bản V3/V4 để gửi telemetry về tay cầm</td></tr>
+      <tr><td>5V</td><td>5V</td><td></td></tr>
+      <tr><td>GND</td><td>GND</td><td></td></tr>
+    </table></div>
+    <div class="warn">Trên F405 thì PA0 = TX và PA1 = RX. Dây TX của bộ thu phải vào PA1. Nếu đúng dây mà vẫn "Không có sóng", thử đổi <code>CRSF_BAUD</code> thành 115200 (một số máy thu ELRS cũ).</div>
+
+    <h2>4× ESC 40A — PWM 250Hz · TIM3</h2>
+    <div class="tbl"><table>
+      <tr><th>ESC</th><th>Chân F405</th><th>Vị trí motor</th></tr>
+      <tr><td>ESC 1 signal</td><td>PC6</td><td>trước-phải · CCW</td></tr>
+      <tr><td>ESC 2 signal</td><td>PC7</td><td>sau-phải · CW</td></tr>
+      <tr><td>ESC 3 signal</td><td>PC8</td><td>sau-trái · CCW</td></tr>
+      <tr><td>ESC 4 signal</td><td>PC9</td><td>trước-trái · CW</td></tr>
+      <tr><td>ESC BEC 5V (đỏ)</td><td>5V</td><td>CHỈ 1 ESC nối</td></tr>
+    </table></div>
+
+    <h2>3× LED — qua điện trở 100Ω</h2>
+    <div class="tbl"><table>
+      <tr><th>LED</th><th>Chân F405</th><th>Ghi chú</th></tr>
+      <tr><td>LED xanh</td><td>PB3</td><td>có sóng</td></tr>
+      <tr><td>LED đỏ</td><td>PB4</td><td>mất sóng (failsafe)</td></tr>
+      <tr><td>LED GPS</td><td>PB5</td><td>tắt / nháy / sáng = chưa có / chưa đủ / sẵn sàng</td></tr>
+    </table></div>
+
+    <h2>Bản đồ chân F405</h2>
+    <div class="tbl"><table>
+      <tr><th>Chân</th><th>Nối với</th></tr>
+      <tr><td>PA0 / PA1</td><td>ELRS RX / ELRS TX</td></tr>
+      <tr><td>PA3 / PA4</td><td>BMP388 CS / ICM-20602 CS</td></tr>
+      <tr><td>PA5 / PA6 / PA7</td><td>SPI1 SCK / MISO / MOSI</td></tr>
+      <tr><td>PA9 / PA10</td><td>GPS RX / GPS TX</td></tr>
+      <tr><td>PB3 / PB4 / PB5</td><td>LED xanh / đỏ / GPS</td></tr>
+      <tr><td>PB6 / PB7</td><td>La bàn SCL / SDA</td></tr>
+      <tr><td>PC6 – PC9</td><td>Motor 1 – 4</td></tr>
+    </table></div>
+
+    <div class="note"><b>V3 và V4 dùng chung sơ đồ này.</b> <b>Khác bản V2 ở đâu:</b> PA9/PA10 (bỏ trống ở V2) giờ dùng cho GPS; thêm PB6/PB7 cho la bàn và PB5 cho đèn GPS. Đừng dùng lẫn hai sơ đồ.</div>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

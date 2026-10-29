@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quadcopter tự cân bằng V2 — STM32F405 + BMP388, có giữ độ cao</title>
+<meta name="description" content="Drone F450 tự chế bản V2: thêm cảm biến áp suất BMP388 để tự giữ độ cao.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <h1>Quadcopter tự cân bằng V2</h1>
+    <p class="sub">Bản nâng cấp: thêm cảm biến áp suất, có giữ độ cao tự động</p>
+
+    <p>Bản V1 giữ được thăng bằng nhưng độ cao hoàn toàn do tay ga — buông ga là tụt. Bản này thêm cảm biến áp suất <b>BMP388</b> để máy tự giữ độ cao: gạt công tắc là drone treo yên ở độ cao hiện tại, người lái chỉ cần lo hướng bay. Bộ thu cũng đổi sang <b>ExpressLRS</b>, nên độ cao, góc nghiêng và chế độ bay hiện thẳng trên màn hình tay cầm. Drone vẫn trôi ngang theo gió — giữ vị trí có từ <a href="v3.html">bản V3</a>.</p>
+
+    <div class="photos">
+      <figure><img src="assets/img/drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
+      <figure><img src="assets/img/fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
+    </div>
+
+    <h2>Khác gì so với bản V1</h2>
+    <div class="tbl"><table>
+      <tr><th>Hạng mục</th><th>V1</th><th>V2</th></tr>
+      <tr><td>Cảm biến</td><td>ICM-20602</td><td>ICM-20602, BMP388</td></tr>
+      <tr><td>Giữ độ cao</td><td>Không — độ cao do tay ga</td><td>Có, bằng BMP388</td></tr>
+      <tr><td>Giữ vị trí</td><td>Không</td><td>Không</td></tr>
+      <tr><td>Bộ thu / tay cầm</td><td>FS-iA6B (PPM) + FS-i6</td><td>ExpressLRS (CRSF) + RadioMaster Pocket — vẫn đổi về PPM được</td></tr>
+      <tr><td>Số liệu bay</td><td>Bluetooth DL-20 → web tune PID</td><td>Về thẳng tay cầm qua ELRS: góc, độ cao, tốc độ lên xuống, chế độ bay</td></tr>
+      <tr><td>Công tắc</td><td>Kênh 5: giữ độ cao</td><td>Kênh 5: ARM · kênh 7: chọn chế độ</td></tr>
+      <tr><td>Chân dùng thêm</td><td>—</td><td>PA3 (chip select BMP388); bộ thu ELRS ở PA0/PA1</td></tr>
+    </table></div>
+
+    <h2>Phần khung và động lực</h2>
+    <div class="parts" data-parts="frame,motor,prop,damping,pocket,elrs,icm,bmp"></div>
+    <p>Khung và động lực giống bản V1; thêm BMP388 và đổi sang hệ ELRS:</p>
+    <div class="tbl"><table>
+      <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú</th></tr>
+      <tr><td>Khung F450</td><td>1</td><td>Cấu hình chữ X, khoảng cách trục 450mm</td></tr>
+      <tr><td>Động cơ DJI 2212 920KV</td><td>4</td><td>2 chiều thuận, 2 chiều nghịch</td></tr>
+      <tr><td>ESC 40A</td><td>4</td><td>Nhớ hiệu chỉnh cả 4 cái cùng lúc trước khi bay</td></tr>
+      <tr><td>Cánh quạt</td><td>4</td><td>Nên dùng 8045 với pin 4S</td></tr>
+      <tr><td>Pin LiPo 4S 2200mAh</td><td>1</td><td>14,8V, đầu XT60</td></tr>
+      <tr><td>Tay điều khiển RadioMaster Pocket</td><td>1</td><td>Phát ELRS 2.4GHz</td></tr>
+      <tr><td>Bộ thu ExpressLRS</td><td>1</td><td>CRSF 420000 baud — đặt 2 chân TX/RX của bộ thu sang chế độ Serial (CRSF)</td></tr>
+      <tr><td><b>BMP388</b></td><td>1</td><td>Cảm biến áp suất, SPI, 3.3V — che bằng mút mỏng</td></tr>
+    </table></div>
+
+    <h3>Thứ tự lắp và hiệu chỉnh</h3>
+    <p>Đừng gắn cánh quạt cho tới bước cuối. Trình tự an toàn: nạp firmware → hiệu chỉnh IMU khi đặt máy nằm phẳng tuyệt đối → hiệu chỉnh tay điều khiển → hiệu chỉnh ESC → kiểm tra chiều quay từng động cơ → cuối cùng mới lắp cánh và thử ga nhẹ ở nơi trống.</p>
+
+    <h2>Firmware</h2>
+    <p>Phần tự cân bằng giữ nguyên từ V1: PID góc → PID tốc độ quay → trộn bốn động cơ, góc nghiêng lấy từ bộ lọc Kalman trộn con quay với gia tốc kế.</p>
+
+    <h3>Hai công tắc</h3>
+    <div class="tbl"><table>
+      <tr><th>Kênh</th><th>Vị trí</th><th>Tác dụng</th></tr>
+      <tr><td>Kênh 5</td><td>trên 1500</td><td>ARM — ga phải ở đáy (dưới 1050) mới cho arm; mỗi lần arm FC hiệu chuẩn lại con quay</td></tr>
+      <tr><td rowspan="2">Kênh 7</td><td>dưới 1250</td><td>Tự cân bằng — tay cầm hiện <code>STAB</code></td></tr>
+      <tr><td>trên 1250</td><td>Giữ độ cao — tay cầm hiện <code>ALT</code> (nấc giữa và nấc trên như nhau)</td></tr>
+    </table></div>
+    <p>Mất sóng quá 0,5 giây là FC tắt motor (failsafe): đèn xanh tắt, đèn đỏ sáng.</p>
+
+    <h3>Giữ độ cao</h3>
+    <p>Baro đo độ cao chậm và nhiễu, gia tốc kế thì nhanh nhưng tích phân lên là trôi. Firmware dùng bộ lọc Kalman 2 chiều trộn hai nguồn này để ước lượng đồng thời <b>độ cao</b> và <b>vận tốc thẳng đứng</b>, rồi chạy tầng PID vận tốc đứng để ra lệnh ga. Độ cao tính từ lúc bật nguồn.</p>
+    <p>Lúc bật chế độ giữ độ cao, code tự chụp lại mức ga đang giữ làm <b>ga treo</b>, rồi chỉ cộng trừ quanh mức đó — nên chuyển chế độ không bị giật.</p>
+    <p>Trong file đang để <code>PAltitude = 0</code>: drone giữ <b>vận tốc lên xuống bằng 0</b> chứ không kéo về đúng độ cao cũ, và cần ga không có tác dụng khi đang giữ độ cao. <code>IVelocityVertical</code> đang là 0.005 — nếu drone từ từ hạ xuống khi giữ độ cao thì thử tăng lên khoảng 0.4. Bản <a href="v4.html">V4</a> đã thêm PID độ cao để kéo về đúng mốc.</p>
+    <h3>Telemetry về tay cầm</h3>
+    <p>Qua đường ELRS, FC gửi về tay cầm: góc nghiêng, độ cao baro, tốc độ lên xuống và chế độ bay. Đường này rất hẹp (5–7 gói mỗi giây); thấy số trễ thì đặt Telem Ratio trong script ExpressLRS về 1:4 hoặc 1:8.</p>
+
+    <div class="note">Nhớ che cảm biến áp suất bằng một miếng mút mỏng — gió từ cánh quạt thổi thẳng vào lỗ lấy áp sẽ làm số đo nhảy loạn. Mọi thông số cần tinh chỉnh đều gom trong <code>Config.h</code>, có ghi chú tiếng Việt.</div>
+    <div class="warn"><b>Tune vòng trong trước.</b> PID tốc độ quay phải chạy ổn đã, rồi mới đến PID góc, cuối cùng mới tới giữ độ cao. Và tháo cánh quạt cho tới khi mọi bài kiểm tra trên bàn đều đạt.</div>
+
+    <h2>Tài liệu &amp; mã nguồn</h2>
+    <ul class="downloads">
+      <li><a href="so-do-v2.html">Sơ đồ đấu dây bản V2</a> — bảng chân từng cảm biến, ESC, LED và bản đồ chân F405</li>
+      <li><a href="downloads/FC_F405_ALT.zip">FC_F405_ALT.zip</a> — firmware bản V2 (tự cân bằng + giữ độ cao)</li>
+      <li><a href="v1.html">Trang bản V1</a> — nên đọc trước nếu bạn mới bắt đầu</li>
+    </ul>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
