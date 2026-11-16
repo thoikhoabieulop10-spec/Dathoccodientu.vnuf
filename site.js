@@ -18,8 +18,8 @@ const SITE = {
 
   // Nhóm dự án — mỗi nhóm một khối trong menu và trang chủ
   groups: {
-    drone:   { name: "Drone tự chế",           desc: "Quadcopter F450, bo mạch STM32F405 tự thiết kế, firmware tự viết." },
-    chatbot: { name: "Chatbot học tiếng Anh",  desc: "Robot nói chuyện bằng giọng nói trên ESP32-S3, vỏ in 3D." },
+    drone:   { name: "Drone tự chế", icon: "🚁", color: "#f2711c", desc: "Quadcopter F450, bo mạch STM32F405 tự thiết kế, firmware tự viết." },
+    chatbot: { name: "Chatbot học tiếng Anh", icon: "🤖", color: "#2b7de9", desc: "Robot nói chuyện bằng giọng nói trên ESP32-S3, vỏ in 3D." },
   },
 
   // status: "done" = đã có | "wip" = đang làm | "soon" = sắp ra
@@ -252,7 +252,7 @@ const SITE = {
   const top = document.getElementById("top");
   if (top) top.innerHTML = `
     <div class="banner">
-      <a class="brand" href="index.html"><b>${SITE.name}</b><span>${SITE.tld}</span></a>
+      <a class="brand" href="index.html"><i class="logo">⚡</i><b>${SITE.name}</b><span>${SITE.tld}</span></a>
       <span class="slogan">${SITE.slogan}</span>
       <nav class="topnav">
         <a href="index.html">Trang chủ</a>
@@ -263,6 +263,12 @@ const SITE = {
 
   const P = SITE.projects.map((p) => ({ ...p, href: p.id + ".html" }));
   const cur = P.find((p) => p.id === here);
+  const curDoc = SITE.docs.find((d) => isHere(d.href));
+  const curGroup = (cur && cur.group) || (curDoc && curDoc.group);
+  if (curGroup && SITE.groups[curGroup]) {
+    document.body.dataset.group = curGroup;
+    document.body.style.setProperty("--g", SITE.groups[curGroup].color);
+  }
 
   const nav = document.getElementById("nav");
   if (nav) {
@@ -270,7 +276,7 @@ const SITE = {
       `<a href="${p.href}"${isHere(p.href) ? ' class="on"' : ""}>${p.title}${extra}</a>`;
     nav.innerHTML = Object.entries(SITE.groups).map(([g, info]) => {
       const ps = P.filter((p) => p.group === g), ds = SITE.docs.filter((d) => d.group === g);
-      return `<div class="box"><h4>${info.name}</h4>
+      return `<div class="box" style="--g:${info.color}"><h4><i>${info.icon}</i>${info.name}</h4>
         ${ps.map((p) => link(p, badge[p.status] || "")).join("")}
         ${ds.length ? `<div class="subdocs">${ds.map((d) => link(d)).join("")}</div>` : ""}
       </div>`;
@@ -284,14 +290,37 @@ const SITE = {
   // Trang chủ: thẻ dự án theo nhóm + danh sách tải về
   const cards = document.getElementById("project-cards");
   if (cards) cards.innerHTML = Object.entries(SITE.groups).map(([g, info]) => `
-    <h3>${info.name}</h3><p class="gdesc">${info.desc}</p>
+    <div class="group-head" style="--g:${info.color}"><i>${info.icon}</i><div><h3>${info.name}</h3><p class="gdesc">${info.desc}</p></div></div>
     <div class="cards">${P.filter((p) => p.group === g).map((p) => `
-      <a class="card" href="${p.href}"><img src="${p.img}" alt="" loading="lazy">
+      <a class="card" href="${p.href}" style="--g:${info.color}"><img src="${p.img}" alt="" loading="lazy">
         <span><b>${p.title}</b>${badge[p.status] || ""}<small>${p.short}</small></span></a>`).join("")}
     </div>`).join("");
+  const hero = document.getElementById("hero");
+  if (hero) {
+    const nFiles = P.reduce((n, p) => n + (p.files || []).length, 0);
+    hero.innerHTML = `
+      <div class="hero-text">
+        <span class="kicker">Điện tử tự chế · Chia sẻ miễn phí</span>
+        <h1>Tự tay làm <em class="c1">drone</em> và <em class="c2">robot</em></h1>
+        <p>Sơ đồ mạch, linh kiện, mã nguồn và giải đáp cho các video trên kênh TikTok của mình.</p>
+        <div class="hero-btn">
+          <a class="btn" href="#du-an">Xem dự án</a>
+          <a class="btn ghost" href="${SITE.tiktok}" target="_blank" rel="noopener">▶ Kênh TikTok</a>
+        </div>
+        <div class="stats">
+          <div><b>${P.length}</b><span>dự án</span></div>
+          <div><b>${Object.keys(SITE.groups).length}</b><span>chủ đề</span></div>
+          <div><b>${nFiles}</b><span>file tải về</span></div>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="drone.webp" alt="Drone F450 tự chế">
+        <img src="giao-dien-ngang.jpg" alt="Giao diện LingoBot">
+      </div>`;
+  }
   const dl = document.getElementById("download-list");
   if (dl) dl.innerHTML = Object.entries(SITE.groups).map(([g, info]) =>
-    P.filter((p) => p.group === g).flatMap((p) => (p.files || []).map((f) =>
+    `<li class="dl-group" style="--g:${info.color}">${info.icon} ${info.name}</li>` + P.filter((p) => p.group === g).flatMap((p) => (p.files || []).map((f) =>
       `<li><a href="${f.href}">${f.href}</a> — ${p.title.split(" — ")[0]}, ${f.note}</li>`)).join("")).join("");
 
   // Trang dự án: đường dẫn + ô tóm tắt
