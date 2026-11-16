@@ -148,23 +148,20 @@ const SITE = {
   if (list) list.innerHTML = SITE.projects.map((p) =>
     `<li><a href="${p.href}">${p.title}</a>${badge[p.status] || ""}</li>`).join("");
 
+  // Mỗi linh kiện một khối: ảnh bên trái, thông số / công dụng / lưu ý bên phải
   document.querySelectorAll(".parts[data-parts]").forEach((box) => {
+    box.className = "part-list";
     box.innerHTML = box.dataset.parts.split(",").map((k) => SITE.parts[k.trim()]).filter(Boolean)
-      .map((p) => `<figure><img src="${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">
-        <figcaption><b>${p.name}</b><span>${p.note}</span></figcaption></figure>`).join("");
-  });
-
-  // Chi tiết từng linh kiện: tự hiện dưới mỗi khung ảnh linh kiện
-  document.querySelectorAll(".parts[data-parts]").forEach((box) => {
-    const items = box.dataset.parts.split(",").map((k) => SITE.parts[k.trim()]).filter((p) => p && p.spec);
-    if (!items.length) return;
-    const wrap = document.createElement("div");
-    wrap.className = "part-details";
-    wrap.innerHTML = items.map((p) => `<details>
-        <summary><img src="${p.img}" alt="" width="40" height="40" loading="lazy"><b>${p.name}</b><span>${p.note}</span></summary>
-        <dl><dt>Thông số</dt><dd>${p.spec}</dd><dt>Công dụng</dt><dd>${p.use}</dd><dt>Lưu ý</dt><dd>${p.tip}</dd></dl>
-      </details>`).join("");
-    box.after(wrap);
+      .map((p) => `<div class="part">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">
+        <div>
+          <h3>${p.name}</h3>
+          <p class="pnote">${p.note}</p>
+          ${p.spec ? `<p><b>Thông số:</b> ${p.spec}</p>` : ""}
+          ${p.use ? `<p><b>Công dụng:</b> ${p.use}</p>` : ""}
+          ${p.tip ? `<p class="ptip"><b>Lưu ý:</b> ${p.tip}</p>` : ""}
+        </div>
+      </div>`).join("");
   });
 
   const log = document.getElementById("log-list");
