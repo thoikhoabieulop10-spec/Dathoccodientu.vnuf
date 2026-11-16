@@ -346,6 +346,32 @@ const SITE = {
     toc.innerHTML = `<b>Nội dung</b><ol>${hs.map((h) => `<li><a href="#${h.id}">${h.textContent}</a></li>`).join("")}</ol>`;
   }
 
+  // Cột phải (chỉ hiện trên màn hình rộng): mục lục bám theo, tải nhanh, nhật ký mới
+  const wrap = document.querySelector(".wrap");
+  if (wrap) {
+    const side = document.createElement("aside");
+    side.id = "side";
+    let html = "";
+    if (toc && toc.innerHTML) html += `<div class="box">${toc.innerHTML.replace("<b>Nội dung</b>", "<h4>📑 Trên trang này</h4>")}</div>`;
+    if (cur && cur.files && cur.files.length) html += `<div class="box"><h4>⬇ Tải nhanh</h4>${cur.files.map((f) =>
+      `<a class="sfile" href="${f.href}">${f.href}<small>${f.note}</small></a>`).join("")}</div>`;
+    const names = { chatbot: "🤖", drone: "🚁", web: "🌐" };
+    html += `<div class="box"><h4>📝 Mới cập nhật</h4>${SITE.log.slice(0, 4).map((l) =>
+      `<a class="slog" href="nhat-ky.html"><small>${names[l.project] || "🌐"} ${l.date || ""}</small>${l.title || l.text}</a>`).join("")}
+      <a class="more" href="nhat-ky.html">Xem tất cả →</a></div>`;
+    html += `<a class="box tiktok-card" href="${SITE.tiktok}" target="_blank" rel="noopener"><b>▶ TikTok</b><span>Xem video hướng dẫn từng bước</span></a>`;
+    side.innerHTML = html;
+    wrap.appendChild(side);
+    // tô sáng mục đang đọc
+    const links = [...side.querySelectorAll('a[href^="#"]')];
+    if (links.length && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+      }), { rootMargin: "-20% 0px -70% 0px" });
+      document.querySelectorAll("main h2[id]").forEach((h) => io.observe(h));
+    }
+  }
+
   // Nút bài trước / bài sau trong cùng nhóm
   const pager = document.getElementById("pager");
   if (pager && cur) {
