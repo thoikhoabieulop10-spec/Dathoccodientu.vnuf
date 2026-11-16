@@ -131,3 +131,21 @@ td code, p code, li code { background: #f2f4f7; padding: 1px 5px; border-radius:
 .photos figcaption { font-size: 13px; color: var(--muted); margin-top: 4px; }
 .tiktok-links { font-size: 14px; margin: 4px 0 14px; }
 @media (max-width: 520px) { .photos { grid-template-columns: 1fr; } }
+
+/* ---- chi tiết linh kiện ---- */
+.part-details { margin: -6px 0 18px; }
+.part-details details { border: 1px solid var(--line); border-radius: 4px; margin: 6px 0; background: #fff; }
+.part-details summary { cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 6px 10px; list-style: none; }
+.part-details summary::-webkit-details-marker { display: none; }
+.part-details summary::after { content: "+"; margin-left: auto; color: var(--muted); font-size: 18px; }
+.part-details details[open] summary::after { content: "−"; }
+.part-details summary img { width: 40px; height: 40px; object-fit: contain; flex: none; }
+.part-details summary span { color: var(--muted); font-size: 13px; }
+.part-details dl { margin: 0; padding: 4px 14px 12px 60px; display: grid; grid-template-columns: 90px 1fr; gap: 6px 10px; font-size: 14px; }
+.part-details dt { color: var(--muted); font-weight: 600; font-size: 13px; }
+.part-details dd { margin: 0; }
+@media (max-width: 520px) {
+  .part-details dl { grid-template-columns: 1fr; padding-left: 14px; gap: 2px; }
+  .part-details dd { margin-bottom: 6px; }
+  .part-details summary span { display: none; }
+}
