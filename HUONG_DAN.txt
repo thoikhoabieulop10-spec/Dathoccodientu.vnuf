@@ -1,0 +1,15 @@
+CÁCH ĐƯA LINGOBOT LÊN WEB (repo Dathoccodientu.vnuf)
+
+Trong gói này có:
+  lingobot.html      -> trang dự án mới (cùng giao diện với các trang V1-V4)
+  lingobot-files/    -> ảnh + 5 file tải về
+  site.js            -> đã thêm "LingoBot — robot học tiếng Anh" vào menu Dự án + 1 dòng Nhật ký
+  index.html         -> đã thêm 2 dòng LingoBot vào mục Tải về
+
+Bước làm:
+1. Giải nén gói này.
+2. Mở github.com/thoikhoabieulop10-spec/Dathoccodientu.vnuf
+3. Add file -> Upload files -> kéo vào CÙNG LÚC: lingobot.html, site.js, index.html và thư mục lingobot-files
+   (site.js và index.html sẽ ghi đè bản cũ, đó là đúng).
+4. Bấm Commit changes. Đợi ~1 phút để Vercel deploy.
+5. Mở https://dathoccodientuvnuf.vercel.app/lingobot để kiểm tra (Ctrl+F5 nếu menu chưa đổi).

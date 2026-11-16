@@ -20,6 +20,7 @@ const SITE = {
     { href: "v2.html", title: "Quadcopter V2 — giữ độ cao", status: "done" },
     { href: "v3.html", title: "Quadcopter V3 — GPS + la bàn",        status: "done" },
     { href: "v4.html", title: "Quadcopter V4 — GPS hoàn thiện",      status: "done" },
+    { href: "lingobot.html", title: "LingoBot — robot học tiếng Anh", status: "done" },
   ],
 
   docs: [
@@ -30,6 +31,7 @@ const SITE = {
 
   // Nhật ký cập nhật — mới nhất để trên cùng
   log: [
+    { date: "16/11/2026", text: "Đăng dự án LingoBot: chatbot học tiếng Anh ESP32-S3, màn cảm ứng 4 inch, nhạc thẻ nhớ, vỏ in 3D hộp radio và robot 50 cm." },
     { date: "29/10/2026", text: "Đăng bản V4: đọc GPS bằng UBX-NAV-PVT, giữ độ cao kéo về mốc, tune xong giữ vị trí, thêm 2 sketch kiểm tra." },
     { date: "29/10/2026", text: "Đăng bản V3: GPS GEP-M10 + la bàn IST8310, giữ vị trí ngoài trời, giữ hướng mũi, telemetry ELRS." },
     { date: "29/10/2026", text: "Chuyển trang sang Vercel." },

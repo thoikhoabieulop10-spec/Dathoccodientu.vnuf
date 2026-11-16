@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingoBot — Robot học tiếng Anh ESP32-S3</title>
+<meta name="description" content="LingoBot: chatbot giọng nói học tiếng Anh dùng ESP32-S3, màn hình cảm ứng 4 inch, firmware xiaozhi tùy biến, phát nhạc thẻ nhớ, vỏ in 3D.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <h1>LingoBot — Robot đồng hành học tiếng Anh</h1>
+    <p class="sub">ESP32-S3 + màn cảm ứng 4 inch, chatbot giọng nói xiaozhi, nhạc thẻ nhớ, vỏ in 3D</p>
+
+    <p>LingoBot là một “bạn cùng lớp” giúp luyện nói tiếng Anh. Máy nghe, hiểu và nói được cả tiếng Việt lẫn tiếng Anh. Nó dạy từ vựng, sửa lỗi phát âm, kể chuyện tiếng Anh và phát nhạc từ thẻ nhớ. Bản thân thiết bị chỉ thu âm, hiển thị và phát loa. Nhận dạng giọng nói, mô hình ngôn ngữ (Qwen) và đọc giọng nói đều chạy trên máy chủ <a href="https://xiaozhi.me" target="_blank" rel="noopener">xiaozhi.me</a>, nên phần cứng rất rẻ.</p>
+
+    <div class="photos">
+      <figure><img src="lingobot-files/giao-dien-ngang.jpg" alt="Giao diện ngang LingoBot" width="980" height="660" loading="lazy"><figcaption>Giao diện ngang 480×320 (bản robot): màn chính, menu, khung chat</figcaption></figure>
+      <figure><img src="lingobot-files/mach-thuc-te.jpg" alt="Mạch thực tế LingoBot" width="912" height="700" loading="lazy"><figcaption>Mạch thực tế khi đang chạy</figcaption></figure>
+    </div>
+    <!-- Có video TikTok thì bỏ dấu chú thích dòng dưới và dán link vào -->
+    <!-- <p class="tiktok-links">▶ Xem video trên TikTok: <a href="LINK_VIDEO" target="_blank" rel="noopener">video 1</a></p> -->
+
+    <h2>Tính năng</h2>
+    <ul>
+      <li><b>Trò chuyện bằng giọng nói</b>: chạm nút NÓI hoặc gọi “Hi ESP”. Mặc định nói tiếng Việt, chuyển sang tiếng Anh khi dạy hoặc luyện nói.</li>
+      <li><b>3 chế độ học</b>: Kể chuyện tiếng Anh (thư viện 20 truyện), Học từ vựng, Nghe nhạc tiếng Anh.</li>
+      <li><b>Nhạc từ thẻ nhớ</b>: nói “phát bài Jingle Bells” hoặc “mở một bài bất kỳ”. File MP3 phát ngay trên máy.</li>
+      <li><b>Giao diện cảm ứng</b>: khuôn mặt biểu cảm, các nút Nói / Âm lượng / Home / Pause / Reset / Đổi WiFi.</li>
+    </ul>
+    <div class="photos">
+      <figure><img src="lingobot-files/so-do-he-thong.jpg" alt="Sơ đồ khối hệ thống" width="1200" height="681" loading="lazy"><figcaption>Sơ đồ khối: ESP32-S3 ↔ máy chủ xiaozhi.me (ASR → LLM → TTS)</figcaption></figure>
+      <figure><img src="lingobot-files/giao-dien-doc.jpg" alt="Giao diện dọc LingoBot" width="1000" height="480" loading="lazy"><figcaption>Giao diện dọc 320×480 (bản hộp radio)</figcaption></figure>
+    </div>
+
+    <h2>Linh kiện</h2>
+    <div class="tbl"><table>
+      <tr><th>Linh kiện</th><th>Giao tiếp</th><th>Giá tham khảo</th></tr>
+      <tr><td>ESP32-S3 N16R8 (16 MB flash, 8 MB PSRAM)</td><td>—</td><td>167.000 đ</td></tr>
+      <tr><td>Màn hình 4.0" ST7796 320×480 + cảm ứng XPT2046 + khe thẻ nhớ</td><td>SPI</td><td>400.000 đ</td></tr>
+      <tr><td>Micro INMP441</td><td>I2S</td><td>~50.000 đ</td></tr>
+      <tr><td>Ampli MAX98357A + loa 8 Ω 2 W</td><td>I2S</td><td>~60.000 đ</td></tr>
+      <tr><td>Thẻ nhớ microSD (FAT32)</td><td>SPI</td><td>200.000 đ</td></tr>
+      <tr><td>Bo hàn, dây, vít M3, cáp USB-C</td><td>—</td><td>~80.000 đ</td></tr>
+      <tr><td>Nhựa PETG 1 kg (vỏ)</td><td>—</td><td>130.000 đ</td></tr>
+    </table></div>
+
+    <h2>Sơ đồ chân</h2>
+    <div class="tbl"><table>
+      <tr><th>Khối</th><th>Chân module</th><th>ESP32-S3</th></tr>
+      <tr><td>Màn hình ST7796</td><td>SDI (MOSI) / SCK / CS / DC / RESET / LED</td><td>47 / 21 / 41 / 40 / 45 / 42</td></tr>
+      <tr><td>Cảm ứng XPT2046</td><td>T_DIN / T_CLK</td><td>47 / 21 (dùng chung với màn)</td></tr>
+      <tr><td></td><td>T_DO / T_CS / T_IRQ</td><td>13 / 12 / 14</td></tr>
+      <tr><td>Thẻ nhớ (hàng J4)</td><td>SD_MOSI / SD_SCK / SD_MISO / SD_CS</td><td>11 / 9 / 8 / 10</td></tr>
+      <tr><td>Micro INMP441</td><td>WS / SCK / SD / L/R</td><td>4 / 5 / 6 / GND</td></tr>
+      <tr><td>Ampli MAX98357A</td><td>DIN / BCLK / LRC</td><td>7 / 15 / 16</td></tr>
+    </table></div>
+    <div class="note">Nối chung tất cả GND. Hàng J4 (thẻ nhớ) trên màn hình thường để trống, phải hàn header vào trước khi cắm dây.</div>
+
+    <h2>Nạp firmware</h2>
+    <p>Không cần cài ESP-IDF trên máy tính, GitHub Actions sẽ build giúp bạn.</p>
+    <ol>
+      <li>Fork <a href="https://github.com/78/xiaozhi-esp32" target="_blank" rel="noopener">github.com/78/xiaozhi-esp32</a> về tài khoản GitHub của bạn.</li>
+      <li>Giải nén <b>LingoBot_firmware.zip</b>. Chọn thư mục <code>ban_doc_hop_radio</code> (màn dọc) hoặc <code>ban_ngang_robot</code> (màn ngang). Tải toàn bộ file trong đó vào <code>main/boards/bread-compact-wifi-lcd/</code> bằng <i>Add file → Upload files</i>.</li>
+      <li>Vào tab <b>Actions</b> và chờ build xong (khoảng 8 phút). Tải mục Artifacts về, giải nén để lấy <code>merged-binary.bin</code>.</li>
+      <li>Mở <a href="https://espressif.github.io/esptool-js/" target="_blank" rel="noopener">ESP Tool</a> trên Chrome hoặc Edge, bấm Connect rồi nạp file ở địa chỉ <code>0x0</code>.</li>
+      <li>Lần đầu bật máy: chạm vào tâm 3 dấu <b>+</b> đỏ để hiệu chỉnh cảm ứng. Kết nối WiFi <code>Xiaozhi-xxxx</code>, mở <code>192.168.4.1</code>, rồi nhập mã 6 số trên xiaozhi.me.</li>
+    </ol>
+
+    <h2>Cấu hình AI trên xiaozhi.me</h2>
+    <ul>
+      <li><b>Role</b>: tên LingoBot, ngôn ngữ Vietnamese, giọng nữ.</li>
+      <li><b>Model</b>: Qwen 3.6 (Fast), bật Memory. Cần xác minh GitHub để dùng model này.</li>
+      <li><b>Knowledge Base</b>: tải file <code>ThuVien_LingoBot.txt</code> lên rồi tích chọn trong Extensions. Nếu dùng nhạc thẻ nhớ thì bỏ tích Music.</li>
+    </ul>
+    <div class="note">Mẫu mô tả vai trò: “Bạn là LingoBot, robot đồng hành khám phá ngôn ngữ, là bạn cùng lớp giúp mình học tiếng Anh. Mặc định nói tiếng Việt, chỉ dùng tiếng Anh khi dạy. Mỗi lần dạy tối đa 5 từ, có nghĩa và câu ví dụ. Khi mình nói sai thì khen trước rồi sửa. Muốn phát nhạc thì gọi self.music.play, không nêu tên bài thì dùng name là random. Nếu nghe không rõ thì nhờ mình nói lại.”</div>
+
+    <h2>Vỏ in 3D</h2>
+    <div class="photos">
+      <figure><img src="lingobot-files/hop-radio-3d.jpg" alt="Hộp kiểu đài radio" width="1060" height="490" loading="lazy"><figcaption>Hộp đài radio 200×140×72 mm, 3 mảnh, ~7 giờ in</figcaption></figure>
+      <figure><img src="lingobot-files/robot-50cm-3d.jpg" alt="Robot LingoBot 50 cm" width="1400" height="570" loading="lazy"><figcaption>Robot cao 50 cm, 15 mảnh, màn hình nằm ngang làm khuôn mặt</figcaption></figure>
+    </div>
+    <p>In bằng Orca Slicer, nhựa PETG, lớp 0,2 mm, độ đặc 15%. Hộp radio thì úp mặt trước xuống bàn, không cần support. Robot thì in từng mảnh (mảnh lớn nhất 109×109×195 mm), ghép bằng chốt sợi nhựa 1,75 mm và keo, tốn khoảng 1,5 kg nhựa.</p>
+    <div class="warn">Loại nhựa chọn trong slicer phải trùng với loại nhựa khai báo trên máy in, nếu không máy sẽ từ chối in. Với Creality Hi, chọn host <b>CrealityPrint</b> để gửi file qua mạng.</div>
+
+    <h2>Hỏi đáp</h2>
+    <h3>Màn hình ngược màu hoặc lộn ngược?</h3>
+    <p>Nếu ngược màu, đổi qua lại giữa <code>CONFIG_LCD_ST7796_320X480</code> và <code>..._NO_IPS</code> trong config.json. Nếu bản ngang bị lộn ngược, đặt <code>LINGOBOT_FLIP_180</code> thành 1 trong config.h.</p>
+    <h3>Báo “No SD card”?</h3>
+    <p>Thẻ phải định dạng FAT32 và hàng J4 phải được hàn header. Kiểm tra lại các chân SD_CS 10 / MOSI 11 / SCK 9 / MISO 8.</p>
+    <h3>Phát nhạc báo không tìm thấy bài?</h3>
+    <p>Tên file .mp3 chính là tên bài. Sau khi chép thêm bài vào thẻ, bấm RESET để máy quét lại.</p>
+    <h3>Muốn đổi WiFi?</h3>
+    <p>Chạm nút “Đổi WiFi” ở màn hình chính, kết nối mạng <code>Xiaozhi-xxxx</code>, mở 192.168.4.1 rồi chọn mạng mới (chỉ hỗ trợ 2.4 GHz).</p>
+
+    <h2>Tài liệu &amp; mã nguồn</h2>
+    <ul class="downloads">
+      <li><a href="lingobot-files/LingoBot_firmware.zip">LingoBot_firmware.zip</a> — firmware xiaozhi tùy biến, có bản dọc (hộp radio) và bản ngang (robot)</li>
+      <li><a href="lingobot-files/LingoBot_hop_radio_3D.zip">LingoBot_hop_radio_3D.zip</a> — 3 file STL vỏ đài radio + file nguồn Python</li>
+      <li><a href="lingobot-files/LingoBot_robot_50cm_3D.zip">LingoBot_robot_50cm_3D.zip</a> — 15 file STL robot 50 cm + file nguồn Python</li>
+      <li><a href="lingobot-files/ThuVien_LingoBot.txt">ThuVien_LingoBot.txt</a> — 20 truyện tiếng Anh + danh sách bài hát (tải lên Knowledge Base)</li>
+      <li><a href="lingobot-files/LingoBot_20_bai_nhac_thieu_nhi.zip">LingoBot_20_bai_nhac_thieu_nhi.zip</a> — 20 giai điệu thiếu nhi dân gian (MP3 không lời) để thử thẻ nhớ</li>
+    </ul>
+    <p style="font-size:13px;color:var(--muted)">Dựa trên mã nguồn mở <a href="https://github.com/78/xiaozhi-esp32" target="_blank" rel="noopener">xiaozhi-esp32</a>, <a href="https://lvgl.io" target="_blank" rel="noopener">LVGL</a> và <a href="https://github.com/lieff/minimp3" target="_blank" rel="noopener">minimp3</a>.</p>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="site.js"></script>
+</body>
+</html>
