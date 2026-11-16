@@ -143,6 +143,10 @@ td code, p code, li code { background: #f2f4f7; padding: 1px 5px; border-radius:
   display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain;
   border: 1px solid var(--line); border-radius: 4px; background: #fff;
 }
+.part .noimg {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border: 1px dashed #c9ced6; border-radius: 4px; color: var(--muted); font-size: 13px;
+}
 .part h3 { margin: 0; font-size: 17px; }
 .part .pnote { margin: 0 0 6px; color: var(--muted); font-size: 13px; }
 .part p { margin: 4px 0; font-size: 14px; }

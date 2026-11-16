@@ -185,6 +185,27 @@ const SITE = {
       spec: "Bộ thu ExpressLRS 2,4 GHz, có các chân PWM, có thể chuyển 2 chân sang chế độ nối tiếp CRSF.",
       use: "Nhận lệnh từ tay Pocket qua giao thức CRSF (1 cặp TX/RX về bo) và gửi telemetry ngược lại về tay.",
       tip: "Phải vào trang web cấu hình của bộ thu để đổi 2 chân sang CRSF, nếu không bo sẽ không đọc được gì. TX của bộ thu nối chéo vào RX của bo." },
+    // ---- Linh kiện LingoBot ----
+    esp32s3: { img: "esp32-s3.webp", name: "ESP32-S3 N16R8", note: "WiFi + BLE, 16 MB flash, 8 MB PSRAM",
+      spec: "Vi điều khiển 2 nhân Xtensa LX7 240 MHz, flash 16 MB, PSRAM 8 MB (Octal), WiFi 2,4 GHz và Bluetooth 5 LE. Bo có 2 cổng USB-C (USB gốc và cổng nạp UART), nút BOOT và RST, đèn LED RGB, đầu nối ăng-ten ngoài IPEX.",
+      use: "Bộ não của LingoBot: chạy firmware xiaozhi, vẽ giao diện LVGL, thu âm và nén Opus, gửi lên máy chủ qua WiFi, phát lại tiếng nói, đọc thẻ nhớ và giải mã MP3. 8 MB PSRAM là bắt buộc để chứa bộ đệm âm thanh và màn hình.",
+      tip: "Phải chọn đúng bản N16R8. Các chân GPIO 35, 36, 37 đã dùng cho PSRAM, đừng nối gì vào. Nếu máy không nhận cổng khi nạp: giữ BOOT, bấm RST rồi thả BOOT. Dùng cáp và cục sạc tốt (≥1 A) vì loa kéo dòng lớn khi nói to." },
+    lcd: { img: "man-st7796.webp", name: "Màn hình 4.0\" ST7796S", note: "480×320, SPI, cảm ứng, khe thẻ nhớ",
+      spec: "Màn TFT 4 inch, chip ST7796S, độ phân giải 480×320, giao tiếp SPI, 14 chân. Cảm ứng điện trở XPT2046, mặt sau có khe thẻ microSD với 4 chân riêng. Kích thước 108×61,5 mm, nặng khoảng 71 g, kèm bút cảm ứng.",
+      use: "Hiển thị khuôn mặt LingoBot, menu và khung chat. Cảm ứng thay cho nút bấm vật lý: NÓI, âm lượng, HOME, PAUSE, RESET, Đổi WiFi. Khe thẻ nhớ chứa nhạc MP3.",
+      tip: "Cảm ứng điện trở phải ấn hơi mạnh, không nhạy như điện thoại. Lần đầu bật phải chạm 3 dấu + để hiệu chỉnh. Màn ngược màu thì đổi cấu hình IPS / NO_IPS. Hàng 4 chân thẻ nhớ thường để trống, phải hàn header." },
+    inmp441: { name: "Micro INMP441", note: "Micro MEMS, I2S",
+      spec: "Micro MEMS đa hướng, ngõ ra số I2S 24 bit, tỉ số tín hiệu/nhiễu khoảng 61 dB, nguồn 1,8–3,3 V.",
+      use: "Thu giọng nói của người học. Tín hiệu đã là số nên không bị nhiễu điện như micro analog, ESP32-S3 đọc thẳng qua I2S.",
+      tip: "Chỉ cấp 3,3 V. Chân L/R nối GND để chọn kênh trái. Không hiện chữ khi nói thường là do micro hỏng hoặc dây WS/SCK/SD lỏng: thay micro là cách thử nhanh nhất. Đặt lỗ thu âm hướng ra ngoài vỏ, xa loa." },
+    amp: { img: "max98357a.webp", name: "Ampli MAX98357A", note: "Class D, I2S, ~3 W",
+      spec: "Ampli class D nhận âm thanh số I2S, công suất khoảng 3,2 W vào loa 4 Ω ở 5 V, nguồn 2,5–5,5 V. Có 2 loại chip BGA và QFN dùng như nhau. Chân GAIN chỉnh độ lợi (để trống là 9 dB), chân SD để tắt hoặc chọn kênh.",
+      use: "Nhận dữ liệu âm thanh số từ ESP32-S3 (DIN, BCLK, LRC) và khuếch đại ra loa. Không cần mạch giải mã DAC riêng.",
+      tip: "Cấp Vin 5 V sẽ to hơn 3,3 V. Hai cực loa nối thẳng vào cọc + và −, không nối cực nào xuống GND. Bị rè khi to quá thì giảm âm lượng hoặc chỉnh chân GAIN." },
+    spk: { img: "loa-2535.webp", name: "Loa 2535 8 Ω 2 W", note: "25×35 mm, đầu JST 1.25",
+      spec: "Loa nhỏ kích thước 25×35 mm, trở kháng 8 Ω, công suất 2 W, dây xoắn đỏ-đen có đầu cắm JST 1.25 mm 2 chân.",
+      use: "Phát giọng nói và nhạc của LingoBot. Vừa gọn trong hộp radio. Robot 50 cm có thể dùng loa hộp 3 W 8 Ω (70×31 mm) cho tiếng to và trầm hơn.",
+      tip: "Loa cần một khoang kín phía sau thì tiếng mới đầy, nên ép sát vào khung loa trong vỏ in 3D. Không dán keo lên màng loa. Cắt đầu JST nếu cần bắt vào cọc vít của ampli." },
   },
 };
 
@@ -243,7 +264,7 @@ const SITE = {
     box.className = "part-list";
     box.innerHTML = box.dataset.parts.split(",").map((k) => SITE.parts[k.trim()]).filter(Boolean)
       .map((p) => `<div class="part">
-        <img src="${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">
+        ${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy" width="480" height="480">` : `<div class="noimg">Chưa có ảnh</div>`}
         <div>
           <h3>${p.name}</h3>
           <p class="pnote">${p.note}</p>
