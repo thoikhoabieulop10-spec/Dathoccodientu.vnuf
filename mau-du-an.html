@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TÊN DỰ ÁN — mô tả ngắn</title>
+<meta name="description" content="Một câu mô tả dự án để hiện trên Google.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- =====================================================================
+  TRANG MẪU CHO MỌI DỰ ÁN — copy file này, đổi tên (VD: v5.html), rồi:
+   1. Thêm dự án vào `projects` trong site.js với id = tên file (VD: "v5").
+   2. Điền nội dung vào đúng 8 mục chuẩn bên dưới, GIỮ NGUYÊN id và thứ tự.
+      Mục nào dự án không có thì xoá cả mục (số thứ tự tự đánh lại).
+   3. Xoá dòng <meta name="robots" content="noindex"> ở trên.
+   Ô tóm tắt, mục lục, menu, nút trước/sau do site.js tự tạo.
+  ===================================================================== -->
+<header id="top"></header>
+<div class="wrap">
+  <aside id="nav"></aside>
+  <main>
+    <h1>TÊN DỰ ÁN</h1>
+    <p class="sub">Một dòng nói dự án làm được gì</p>
+    <div class="summary" data-project="ID-DU-AN"></div>
+
+    <!-- Ảnh: 2 ảnh cạnh nhau. Video TikTok: dòng tiktok-links -->
+    <div class="photos">
+      <figure><img src="anh-1.webp" alt="Mô tả ảnh 1" loading="lazy"><figcaption>Chú thích ảnh 1</figcaption></figure>
+      <figure><img src="anh-2.webp" alt="Mô tả ảnh 2" loading="lazy"><figcaption>Chú thích ảnh 2</figcaption></figure>
+    </div>
+    <p class="tiktok-links">▶ Xem video trên TikTok: <a href="LINK" target="_blank" rel="noopener">video 1</a></p>
+    <nav class="toc" id="toc"></nav>
+
+    <h2 id="gioi-thieu">Giới thiệu</h2>
+    <p>Dự án là gì, giải quyết vấn đề gì, làm được những gì.</p>
+    <h3>Khác gì so với bản trước</h3>
+    <p>(Chỉ dùng cho phiên bản nâng cấp — bảng so sánh Hạng mục / bản cũ / bản mới.)</p>
+
+    <h2 id="linh-kien">Linh kiện</h2>
+    <!-- Khối ảnh + thông số tự hiện từ `parts` trong site.js -->
+    <div class="parts" data-parts="khoa1,khoa2"></div>
+    <h3>Danh sách linh kiện</h3>
+    <div class="tbl"><table>
+      <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú / giá</th></tr>
+      <tr><td>...</td><td>1</td><td>...</td></tr>
+    </table></div>
+
+    <h2 id="so-do">Sơ đồ đấu dây</h2>
+    <p class="doc-link">📐 Bảng chân đầy đủ: <a href="so-do-xx.html">Sơ đồ đấu dây ...</a></p>
+    <div class="tbl"><table>
+      <tr><th>Khối</th><th>Chân module</th><th>Chân vi điều khiển</th></tr>
+      <tr><td>...</td><td>...</td><td>...</td></tr>
+    </table></div>
+
+    <h2 id="lap-rap">Lắp ráp &amp; hiệu chỉnh</h2>
+    <p>Thứ tự lắp, in 3D, hiệu chỉnh cảm biến trước khi chạy.</p>
+    <div class="warn">Cảnh báo an toàn quan trọng.</div>
+
+    <h2 id="phan-mem">Phần mềm</h2>
+    <p>Firmware làm gì, cách nạp, các thông số cần chỉnh (h3 cho từng phần).</p>
+
+    <h2 id="su-dung">Cách sử dụng</h2>
+    <p>Các nút, công tắc, chế độ — người dùng làm gì sau khi lắp xong.</p>
+
+    <h2 id="hoi-dap">Hỏi đáp &amp; lưu ý</h2>
+    <h3>Câu hỏi thường gặp?</h3>
+    <p>Trả lời.</p>
+
+    <h2 id="tai-ve">Tải về</h2>
+    <ul class="downloads">
+      <li><a href="TEN_FILE.zip">TEN_FILE.zip</a> — mô tả</li>
+    </ul>
+    <nav class="pager" id="pager"></nav>
+  </main>
+</div>
+<footer id="foot"></footer>
+<script src="site.js"></script>
+</body>
+</html>

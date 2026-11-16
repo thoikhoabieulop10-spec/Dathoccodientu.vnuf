@@ -12,17 +12,21 @@
 <div class="wrap">
   <aside id="nav"></aside>
   <main>
+
     <h1>Quadcopter tự cân bằng V2</h1>
     <p class="sub">Bản nâng cấp: thêm cảm biến áp suất, có giữ độ cao tự động</p>
-
-    <p>Bản V1 giữ được thăng bằng nhưng độ cao hoàn toàn do tay ga — buông ga là tụt. Bản này thêm cảm biến áp suất <b>BMP388</b> để máy tự giữ độ cao: gạt công tắc là drone treo yên ở độ cao hiện tại, người lái chỉ cần lo hướng bay. Bộ thu cũng đổi sang <b>ExpressLRS</b>, nên độ cao, góc nghiêng và chế độ bay hiện thẳng trên màn hình tay cầm. Drone vẫn trôi ngang theo gió — giữ vị trí có từ <a href="v3.html">bản V3</a>.</p>
+    <div class="summary" data-project="v2"></div>
 
     <div class="photos">
       <figure><img src="drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
       <figure><img src="fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
     </div>
+    <nav class="toc" id="toc"></nav>
 
-    <h2>Khác gì so với bản V1</h2>
+    <h2 id="gioi-thieu">Giới thiệu</h2>
+    <p>Bản V1 giữ được thăng bằng nhưng độ cao hoàn toàn do tay ga — buông ga là tụt. Bản này thêm cảm biến áp suất <b>BMP388</b> để máy tự giữ độ cao: gạt công tắc là drone treo yên ở độ cao hiện tại, người lái chỉ cần lo hướng bay. Bộ thu cũng đổi sang <b>ExpressLRS</b>, nên độ cao, góc nghiêng và chế độ bay hiện thẳng trên màn hình tay cầm. Drone vẫn trôi ngang theo gió — giữ vị trí có từ <a href="v3.html">bản V3</a>.</p>
+
+    <h3>Khác gì so với bản V1</h3>
     <div class="tbl"><table>
       <tr><th>Hạng mục</th><th>V1</th><th>V2</th></tr>
       <tr><td>Cảm biến</td><td>ICM-20602</td><td>ICM-20602, BMP388</td></tr>
@@ -34,8 +38,9 @@
       <tr><td>Chân dùng thêm</td><td>—</td><td>PA3 (chip select BMP388); bộ thu ELRS ở PA0/PA1</td></tr>
     </table></div>
 
-    <h2>Phần khung và động lực</h2>
+    <h2 id="linh-kien">Linh kiện</h2>
     <div class="parts" data-parts="frame,motor,prop,esc,damping,pocket,elrs,icm,bmp"></div>
+    <h3>Danh sách linh kiện</h3>
     <p>Khung và động lực giống bản V1; thêm BMP388 và đổi sang hệ ELRS:</p>
     <div class="tbl"><table>
       <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú</th></tr>
@@ -49,20 +54,15 @@
       <tr><td><b>BMP388</b></td><td>1</td><td>Cảm biến áp suất, SPI, 3.3V — che bằng mút mỏng</td></tr>
     </table></div>
 
+    <h2 id="so-do">Sơ đồ đấu dây</h2>
+    <p class="doc-link">📐 Bảng chân đầy đủ: <a href="so-do-v2.html">Sơ đồ đấu dây bản V2</a></p>
+
+    <h2 id="lap-rap">Lắp ráp & hiệu chỉnh</h2>
     <h3>Thứ tự lắp và hiệu chỉnh</h3>
     <p>Đừng gắn cánh quạt cho tới bước cuối. Trình tự an toàn: nạp firmware → hiệu chỉnh IMU khi đặt máy nằm phẳng tuyệt đối → hiệu chỉnh tay điều khiển → hiệu chỉnh ESC → kiểm tra chiều quay từng động cơ → cuối cùng mới lắp cánh và thử ga nhẹ ở nơi trống.</p>
 
-    <h2>Firmware</h2>
+    <h2 id="phan-mem">Phần mềm</h2>
     <p>Phần tự cân bằng giữ nguyên từ V1: PID góc → PID tốc độ quay → trộn bốn động cơ, góc nghiêng lấy từ bộ lọc Kalman trộn con quay với gia tốc kế.</p>
-
-    <h3>Hai công tắc</h3>
-    <div class="tbl"><table>
-      <tr><th>Kênh</th><th>Vị trí</th><th>Tác dụng</th></tr>
-      <tr><td>Kênh 5</td><td>trên 1500</td><td>ARM — ga phải ở đáy (dưới 1050) mới cho arm; mỗi lần arm FC hiệu chuẩn lại con quay</td></tr>
-      <tr><td rowspan="2">Kênh 7</td><td>dưới 1250</td><td>Tự cân bằng — tay cầm hiện <code>STAB</code></td></tr>
-      <tr><td>trên 1250</td><td>Giữ độ cao — tay cầm hiện <code>ALT</code> (nấc giữa và nấc trên như nhau)</td></tr>
-    </table></div>
-    <p>Mất sóng quá 0,5 giây là FC tắt motor (failsafe): đèn xanh tắt, đèn đỏ sáng.</p>
 
     <h3>Giữ độ cao</h3>
     <p>Baro đo độ cao chậm và nhiễu, gia tốc kế thì nhanh nhưng tích phân lên là trôi. Firmware dùng bộ lọc Kalman 2 chiều trộn hai nguồn này để ước lượng đồng thời <b>độ cao</b> và <b>vận tốc thẳng đứng</b>, rồi chạy tầng PID vận tốc đứng để ra lệnh ga. Độ cao tính từ lúc bật nguồn.</p>
@@ -74,12 +74,24 @@
     <div class="note">Nhớ che cảm biến áp suất bằng một miếng mút mỏng — gió từ cánh quạt thổi thẳng vào lỗ lấy áp sẽ làm số đo nhảy loạn. Mọi thông số cần tinh chỉnh đều gom trong <code>Config.h</code>, có ghi chú tiếng Việt.</div>
     <div class="warn"><b>Tune vòng trong trước.</b> PID tốc độ quay phải chạy ổn đã, rồi mới đến PID góc, cuối cùng mới tới giữ độ cao. Và tháo cánh quạt cho tới khi mọi bài kiểm tra trên bàn đều đạt.</div>
 
-    <h2>Tài liệu &amp; mã nguồn</h2>
+    <h2 id="su-dung">Cách sử dụng</h2>
+    <h3>Hai công tắc</h3>
+    <div class="tbl"><table>
+      <tr><th>Kênh</th><th>Vị trí</th><th>Tác dụng</th></tr>
+      <tr><td>Kênh 5</td><td>trên 1500</td><td>ARM — ga phải ở đáy (dưới 1050) mới cho arm; mỗi lần arm FC hiệu chuẩn lại con quay</td></tr>
+      <tr><td rowspan="2">Kênh 7</td><td>dưới 1250</td><td>Tự cân bằng — tay cầm hiện <code>STAB</code></td></tr>
+      <tr><td>trên 1250</td><td>Giữ độ cao — tay cầm hiện <code>ALT</code> (nấc giữa và nấc trên như nhau)</td></tr>
+    </table></div>
+    <p>Mất sóng quá 0,5 giây là FC tắt motor (failsafe): đèn xanh tắt, đèn đỏ sáng.</p>
+
+    <h2 id="tai-ve">Tải về</h2>
     <ul class="downloads">
       <li><a href="so-do-v2.html">Sơ đồ đấu dây bản V2</a> — bảng chân từng cảm biến, ESC, LED và bản đồ chân F405</li>
       <li><a href="FC_F405_ALT.zip">FC_F405_ALT.zip</a> — firmware bản V2 (tự cân bằng + giữ độ cao)</li>
       <li><a href="v1.html">Trang bản V1</a> — nên đọc trước nếu bạn mới bắt đầu</li>
     </ul>
+  
+    <nav class="pager" id="pager"></nav>
   </main>
 </div>
 <footer id="foot"></footer>

@@ -12,19 +12,24 @@
 <div class="wrap">
   <aside id="nav"></aside>
   <main>
+
     <h1>Quadcopter tự cân bằng V1</h1>
     <p class="sub">Bản đầu: chỉ tự cân bằng, chưa có giữ độ cao</p>
-
-    <p>Bản này chỉ dùng một cảm biến duy nhất là ICM-20602. Máy giữ được thăng bằng và bay theo cần điều khiển, nhưng độ cao hoàn toàn do tay ga người lái — buông ga ra là nó tụt. Đây là bản nên làm trước để hiểu vòng điều khiển cơ bản, trước khi thêm cảm biến áp suất ở <a href="v2.html">bản V2</a>.</p>
+    <div class="summary" data-project="v1"></div>
 
     <div class="photos">
       <figure><img src="drone.webp" alt="Drone F450 tự chế đã lắp hoàn chỉnh" width="900" height="852" loading="lazy"><figcaption>Drone F450 đã lắp hoàn chỉnh, GPS trên cột</figcaption></figure>
       <figure><img src="fc-board.webp" alt="Bo mạch FC tự thiết kế với ICM-20602 và BMP388" width="638" height="900" loading="lazy"><figcaption>Bo mạch FC tự thiết kế: ICM-20602, BMP388, 3 đèn báo</figcaption></figure>
     </div>
     <p class="tiktok-links">▶ Xem video trên TikTok: <a href="https://www.tiktok.com/@dathoccodientu.03/video/7663343187334794504" target="_blank" rel="noopener">video 1</a> · <a href="https://www.tiktok.com/@dathoccodientu.03/video/7666671470998801682" target="_blank" rel="noopener">video 2</a></p>
+    <nav class="toc" id="toc"></nav>
 
-    <h2>Phần khung và động lực</h2>
+    <h2 id="gioi-thieu">Giới thiệu</h2>
+    <p>Bản này chỉ dùng một cảm biến duy nhất là ICM-20602. Máy giữ được thăng bằng và bay theo cần điều khiển, nhưng độ cao hoàn toàn do tay ga người lái — buông ga ra là nó tụt. Đây là bản nên làm trước để hiểu vòng điều khiển cơ bản, trước khi thêm cảm biến áp suất ở <a href="v2.html">bản V2</a>.</p>
+
+    <h2 id="linh-kien">Linh kiện</h2>
     <div class="parts" data-parts="frame,motor,prop,esc,damping,tx,ia6b,icm"></div>
+    <h3>Danh sách linh kiện</h3>
     <div class="tbl"><table>
       <tr><th>Linh kiện</th><th>SL</th><th>Ghi chú</th></tr>
       <tr><td>Khung F450</td><td>1</td><td>Cấu hình chữ X, khoảng cách trục 450mm</td></tr>
@@ -37,14 +42,18 @@
       <tr><td>Module BLE DL-20</td><td>1</td><td>Tuỳ chọn — gửi số liệu về web tune PID qua Bluetooth</td></tr>
     </table></div>
 
+    <h2 id="so-do">Sơ đồ đấu dây</h2>
+    <p class="doc-link">📐 Bảng chân đầy đủ: <a href="so-do-v1.html">Sơ đồ đấu dây bản V1</a></p>
+
     <h3>Kết nối bộ thu</h3>
     <p>Bộ thu iA6B cắm vào bo bằng một dây PPM duy nhất, gộp 8 kênh trên cùng một đường tín hiệu thay vì kéo riêng từng dây servo. Cổng PPM nằm ở hàng chân cạnh cổng nạp trên bo.</p>
     <p>Tay FS-i6 xuất xưởng chỉ mở 6 kênh; muốn dùng đủ 8 thì phải nạp lại firmware mở khoá 10 kênh cho tay phát. Nếu bạn chưa làm bước đó, hai kênh cuối trong luồng PPM sẽ luôn nằm im ở giá trị mặc định — không gây lỗi gì, chỉ là không điều khiển được.</p>
 
+    <h2 id="lap-rap">Lắp ráp & hiệu chỉnh</h2>
     <h3>Thứ tự lắp và hiệu chỉnh</h3>
     <p>Đừng gắn cánh quạt cho tới bước cuối. Trình tự an toàn: nạp firmware → hiệu chỉnh IMU khi đặt máy nằm phẳng tuyệt đối → hiệu chỉnh tay điều khiển → hiệu chỉnh ESC → kiểm tra chiều quay từng động cơ → cuối cùng mới lắp cánh và thử ga nhẹ ở nơi trống.</p>
 
-    <h2>Firmware</h2>
+    <h2 id="phan-mem">Phần mềm</h2>
     <p>Code tự viết trên STM32duino, không dùng Betaflight hay ArduPilot. Dự án chia thành nhiều tab cho dễ đọc: IMU đọc cảm biến, EKF ước lượng trạng thái, PID tính lệnh điều khiển, Motors trộn ra bốn động cơ, Receiver giải mã PPM. Toàn bộ thông số cần chỉnh nằm gọn trong <code>Config.h</code>.</p>
     <p>Cấu trúc điều khiển theo kiểu tầng. Cần điều khiển đặt ra góc nghiêng mong muốn → PID góc tính ra tốc độ quay mong muốn → PID tốc độ xuất ra hỗn hợp bốn động cơ. Góc nghiêng lấy từ bộ lọc Kalman trộn con quay hồi chuyển (mượt nhưng trôi) với gia tốc kế (nhiễu nhưng không trôi).</p>
 
@@ -57,11 +66,13 @@
     <div class="note">Mọi thông số cần tinh chỉnh đều gom vào một khối ở đầu file, có ghi chú tiếng Việt cho từng hằng số. Phần còn lại không cần đụng tới khi tune.</div>
     <div class="warn"><b>Tune vòng trong trước.</b> PID tốc độ quay phải chạy ổn đã rồi mới đến PID góc. Và tháo cánh quạt cho tới khi mọi bài kiểm tra trên bàn đều đạt.</div>
 
-    <h2>Tài liệu &amp; mã nguồn</h2>
+    <h2 id="tai-ve">Tải về</h2>
     <ul class="downloads">
       <li><a href="so-do-v1.html">Sơ đồ đấu dây bản V1</a> — bảng chân từng cảm biến, ESC, LED và bản đồ chân F405</li>
       <li><a href="FC_F405_V1.zip">FC_F405_V1.zip</a> — toàn bộ firmware bản V1, kèm sketch <code>accel_offset_calibration</code> để đo offset gia tốc kế</li>
     </ul>
+  
+    <nav class="pager" id="pager"></nav>
   </main>
 </div>
 <footer id="foot"></footer>

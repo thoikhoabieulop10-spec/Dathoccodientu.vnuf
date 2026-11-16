@@ -168,3 +168,52 @@ td code, p code, li code { background: #f2f4f7; padding: 1px 5px; border-radius:
 .tag.proj-chatbot { background: #e3efff; color: #1a5fa8; }
 .tag.proj-drone { background: #ffeede; color: #a35200; }
 .tag.proj-web { background: #e8ecf1; color: #59636e; }
+
+/* =====================================================================
+ *  KHUNG CHUẨN TRANG DỰ ÁN
+ * ===================================================================== */
+#nav .subdocs { margin-top: 6px; padding-top: 4px; border-top: 1px solid var(--line); }
+#nav .subdocs a { font-size: 13px; color: var(--muted); padding-left: 10px; }
+#nav .subdocs a::before { content: "📐 "; }
+
+.summary .crumbs { margin: 0 0 10px; }
+.summary dl {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 0 0 14px;
+  border: 1px solid var(--line); border-radius: 4px; background: #f7f8fa;
+}
+.summary dl > div { padding: 8px 12px; border-right: 1px solid var(--line); min-width: 0; }
+.summary dl > div:last-child { border-right: 0; }
+.summary dt { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); }
+.summary dd { margin: 2px 0 0; font-size: 13px; overflow-wrap: anywhere; }
+
+.toc { border: 1px solid var(--line); border-radius: 4px; padding: 10px 14px; margin: 14px 0 6px; background: #fff; }
+.toc b { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.toc ol { margin: 6px 0 0; padding-left: 22px; columns: 2; column-gap: 24px; font-size: 14px; }
+.toc li { break-inside: avoid; padding: 1px 0; }
+
+/* Đánh số mục tự động: 1. Giới thiệu, 2. Linh kiện… */
+main { counter-reset: sec; }
+main h2[id] { counter-increment: sec; scroll-margin-top: 10px; }
+main h2[id]::before { content: counter(sec) ". "; color: var(--accent); }
+
+.doc-link { background: #f2f7fd; border: 1px solid #d3e4f5; border-radius: 4px; padding: 8px 12px; }
+
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; }
+.pager .next { text-align: right; margin-left: auto; }
+
+/* Trang chủ: thẻ dự án */
+#project-cards h3 { margin: 18px 0 2px; }
+#project-cards .gdesc { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.card { display: block; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: #fff; color: var(--ink); }
+.card:hover { text-decoration: none; border-color: var(--link); }
+.card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #f2f4f7; }
+.card span { display: block; padding: 8px 10px 10px; font-size: 14px; line-height: 1.4; }
+.card small { display: block; color: var(--muted); margin-top: 3px; }
+
+@media (max-width: 760px) {
+  .summary dl { grid-template-columns: 1fr 1fr; }
+  .summary dl > div:nth-child(2) { border-right: 0; }
+  .summary dl > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .toc ol { columns: 1; }
+}

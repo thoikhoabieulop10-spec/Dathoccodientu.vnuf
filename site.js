@@ -1,11 +1,13 @@
 /* =====================================================================
- *  SITE.JS — FILE DUY NHẤT CẦN SỬA KHI THÊM PHIÊN BẢN MỚI
+ *  SITE.JS — FILE DUY NHẤT CẦN SỬA KHI THÊM DỰ ÁN / PHIÊN BẢN MỚI
  *
- *  Thêm bản V5:
- *    1. Copy v4.html thành v5.html, sửa nội dung bên trong
- *    2. Thêm một dòng vào mảng `projects` bên dưới
- *    3. (tuỳ chọn) thêm một dòng vào `log` để ghi nhật ký cập nhật
- *  Menu bên trái, trang chủ và nhật ký sẽ tự cập nhật theo.
+ *  Thêm một dự án mới (VD: Drone V5 hoặc dự án khác):
+ *    1. Copy mau-du-an.html thành tên mới (VD: v5.html), điền nội dung
+ *       vào ĐÚNG các mục chuẩn có sẵn, mục nào không có thì xoá cả mục.
+ *    2. Thêm 1 dòng vào `projects` bên dưới (nhớ `group`).
+ *    3. Linh kiện mới: thêm vào `parts` (ảnh 480×480 .webp, nền trắng).
+ *    4. Ghi nhật ký vào `log`.
+ *  Menu, trang chủ, mục lục, ô tóm tắt, nút trước/sau tự cập nhật theo.
  * ===================================================================== */
 
 const SITE = {
@@ -14,19 +16,45 @@ const SITE = {
   slogan: "Tài liệu chia sẻ miễn phí",
   tiktok: "https://www.tiktok.com/@dathoccodientu.03",
 
+  // Nhóm dự án — mỗi nhóm một khối trong menu và trang chủ
+  groups: {
+    drone:   { name: "Drone tự chế",           desc: "Quadcopter F450, bo mạch STM32F405 tự thiết kế, firmware tự viết." },
+    chatbot: { name: "Chatbot học tiếng Anh",  desc: "Robot nói chuyện bằng giọng nói trên ESP32-S3, vỏ in 3D." },
+  },
+
   // status: "done" = đã có | "wip" = đang làm | "soon" = sắp ra
+  // id = tên file không có .html · short = mô tả 1 dòng · img = ảnh đại diện
+  // main = linh kiện chính · updated = ngày cập nhật · files = file tải về chính
   projects: [
-    { href: "v1.html", title: "Quadcopter V1 — tự cân bằng",        status: "done" },
-    { href: "v2.html", title: "Quadcopter V2 — giữ độ cao", status: "done" },
-    { href: "v3.html", title: "Quadcopter V3 — GPS + la bàn",        status: "done" },
-    { href: "v4.html", title: "Quadcopter V4 — GPS hoàn thiện",      status: "done" },
-    { href: "lingobot.html", title: "LingoBot — robot học tiếng Anh", status: "done" },
+    { id: "v1", group: "drone", title: "Quadcopter V1 — tự cân bằng", status: "done",
+      short: "Chỉ tự cân bằng, một cảm biến ICM-20602.", img: "drone.webp",
+      main: "STM32F405 · ICM-20602 · FS-i6", updated: "",
+      files: [{ href: "FC_F405_V1.zip", note: "firmware V1" }] },
+    { id: "v2", group: "drone", title: "Quadcopter V2 — giữ độ cao", status: "done",
+      short: "Thêm BMP388 giữ độ cao, chuyển sang ELRS.", img: "fc-board.webp",
+      main: "STM32F405 · ICM-20602 · BMP388 · ELRS", updated: "",
+      files: [{ href: "FC_F405_ALT.zip", note: "firmware V2" }] },
+    { id: "v3", group: "drone", title: "Quadcopter V3 — GPS + la bàn", status: "done",
+      short: "GPS M10 + la bàn IST8310, giữ vị trí (bản đầu).", img: "drone.webp",
+      main: "STM32F405 · GPS GEP-M10 · IST8310", updated: "29/10/2026",
+      files: [{ href: "FC_F405_V3.zip", note: "firmware V3" }] },
+    { id: "v4", group: "drone", title: "Quadcopter V4 — GPS hoàn thiện", status: "done",
+      short: "Giữ vị trí đã tune xong, kèm 2 sketch kiểm tra.", img: "drone.webp",
+      main: "STM32F405 · GPS GEP-M10 · IST8310", updated: "29/10/2026",
+      files: [{ href: "FC_F405_M10_HTD.zip", note: "firmware V4 + sketch kiểm tra" }] },
+    { id: "lingobot", group: "chatbot", title: "LingoBot — robot học tiếng Anh", status: "done",
+      short: "Nói chuyện, dạy từ, kể chuyện, phát nhạc thẻ nhớ.", img: "giao-dien-ngang.jpg",
+      main: "ESP32-S3 · ST7796 4\" · INMP441 · MAX98357A", updated: "16/11/2026",
+      files: [{ href: "LingoBot_firmware.zip", note: "firmware dọc + ngang" },
+              { href: "LingoBot_robot_50cm_3D.zip", note: "STL robot 50 cm" },
+              { href: "LingoBot_hop_radio_3D.zip", note: "STL hộp radio" }] },
   ],
 
+  // Tài liệu phụ (trang sơ đồ…) — group để xếp vào đúng nhóm trong menu
   docs: [
-    { href: "so-do-v1.html", title: "Sơ đồ đấu dây V1" },
-    { href: "so-do-v2.html", title: "Sơ đồ đấu dây V2" },
-    { href: "so-do-v4.html", title: "Sơ đồ đấu dây V3 / V4" },
+    { href: "so-do-v1.html", group: "drone", title: "Sơ đồ đấu dây V1" },
+    { href: "so-do-v2.html", group: "drone", title: "Sơ đồ đấu dây V2" },
+    { href: "so-do-v4.html", group: "drone", title: "Sơ đồ đấu dây V3 / V4" },
   ],
 
   // Nhật ký — mới nhất để trên cùng.
@@ -233,31 +261,70 @@ const SITE = {
       </nav>
     </div>`;
 
+  const P = SITE.projects.map((p) => ({ ...p, href: p.id + ".html" }));
+  const cur = P.find((p) => p.id === here);
+
   const nav = document.getElementById("nav");
   if (nav) {
     const link = (p, extra = "") =>
       `<a href="${p.href}"${isHere(p.href) ? ' class="on"' : ""}>${p.title}${extra}</a>`;
-    nav.innerHTML = `
-      <div class="box">
-        <h4>Dự án</h4>
-        ${SITE.projects.map((p) => link(p, badge[p.status] || "")).join("")}
-      </div>
-      <div class="box">
-        <h4>Tài liệu</h4>
-        ${SITE.docs.map((d) => link(d)).join("")}
-      </div>
-      <div class="box">
-        <a href="${SITE.tiktok}" target="_blank" rel="noopener">▶ Kênh TikTok</a>
+    nav.innerHTML = Object.entries(SITE.groups).map(([g, info]) => {
+      const ps = P.filter((p) => p.group === g), ds = SITE.docs.filter((d) => d.group === g);
+      return `<div class="box"><h4>${info.name}</h4>
+        ${ps.map((p) => link(p, badge[p.status] || "")).join("")}
+        ${ds.length ? `<div class="subdocs">${ds.map((d) => link(d)).join("")}</div>` : ""}
       </div>`;
+    }).join("") + `<div class="box"><a href="nhat-ky.html">📝 Nhật ký</a><a href="${SITE.tiktok}" target="_blank" rel="noopener">▶ Kênh TikTok</a></div>`;
   }
 
   const foot = document.getElementById("foot");
   if (foot) foot.innerHTML =
     `© ${new Date().getFullYear()} ${SITE.name}${SITE.tld} · ${SITE.slogan}`;
 
-  const list = document.getElementById("project-list");
-  if (list) list.innerHTML = SITE.projects.map((p) =>
-    `<li><a href="${p.href}">${p.title}</a>${badge[p.status] || ""}</li>`).join("");
+  // Trang chủ: thẻ dự án theo nhóm + danh sách tải về
+  const cards = document.getElementById("project-cards");
+  if (cards) cards.innerHTML = Object.entries(SITE.groups).map(([g, info]) => `
+    <h3>${info.name}</h3><p class="gdesc">${info.desc}</p>
+    <div class="cards">${P.filter((p) => p.group === g).map((p) => `
+      <a class="card" href="${p.href}"><img src="${p.img}" alt="" loading="lazy">
+        <span><b>${p.title}</b>${badge[p.status] || ""}<small>${p.short}</small></span></a>`).join("")}
+    </div>`).join("");
+  const dl = document.getElementById("download-list");
+  if (dl) dl.innerHTML = Object.entries(SITE.groups).map(([g, info]) =>
+    P.filter((p) => p.group === g).flatMap((p) => (p.files || []).map((f) =>
+      `<li><a href="${f.href}">${f.href}</a> — ${p.title.split(" — ")[0]}, ${f.note}</li>`)).join("")).join("");
+
+  // Trang dự án: đường dẫn + ô tóm tắt
+  const sum = document.querySelector(".summary[data-project]");
+  if (sum && cur) {
+    const g = SITE.groups[cur.group] || { name: "" };
+    const h1 = document.querySelector("main h1");
+    if (h1) h1.insertAdjacentHTML("beforebegin",
+      `<p class="crumbs"><a href="index.html">Trang chủ</a> › ${g.name} › ${cur.title.split(" — ")[0]}</p>`);
+    sum.innerHTML = `
+      <dl>
+        <div><dt>Nhóm</dt><dd>${g.name}</dd></div>
+        <div><dt>Linh kiện chính</dt><dd>${cur.main || "—"}</dd></div>
+        <div><dt>Cập nhật</dt><dd>${cur.updated || "—"}</dd></div>
+        <div><dt>Tải về</dt><dd>${(cur.files || []).map((f) => `<a href="${f.href}">${f.href}</a>`).join("<br>") || "—"}</dd></div>
+      </dl>`;
+  }
+
+  // Mục lục tự sinh từ các tiêu đề mục (h2 có id), đánh số tự động
+  const toc = document.getElementById("toc");
+  if (toc) {
+    const hs = [...document.querySelectorAll("main h2[id]")];
+    toc.innerHTML = `<b>Nội dung</b><ol>${hs.map((h) => `<li><a href="#${h.id}">${h.textContent}</a></li>`).join("")}</ol>`;
+  }
+
+  // Nút bài trước / bài sau trong cùng nhóm
+  const pager = document.getElementById("pager");
+  if (pager && cur) {
+    const ps = P.filter((p) => p.group === cur.group), i = ps.indexOf(ps.find((p) => p.id === cur.id));
+    const prev = ps[i - 1], next = ps[i + 1];
+    pager.innerHTML = (prev ? `<a href="${prev.href}">← ${prev.title}</a>` : "<span></span>") +
+                      (next ? `<a href="${next.href}" class="next">${next.title} →</a>` : "<span></span>");
+  }
 
   // Mỗi linh kiện một khối: ảnh bên trái, thông số / công dụng / lưu ý bên phải
   document.querySelectorAll(".parts[data-parts]").forEach((box) => {
