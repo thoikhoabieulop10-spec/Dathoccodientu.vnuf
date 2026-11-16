@@ -29,14 +29,104 @@ const SITE = {
     { href: "so-do-v4.html", title: "Sơ đồ đấu dây V3 / V4" },
   ],
 
-  // Nhật ký cập nhật — mới nhất để trên cùng
+  // Nhật ký — mới nhất để trên cùng.
+  // project: "chatbot" | "drone" | "web". details: các ý chi tiết (có thể bỏ trống).
   log: [
-    { date: "16/11/2026", text: "Đăng dự án LingoBot: chatbot học tiếng Anh ESP32-S3, màn cảm ứng 4 inch, nhạc thẻ nhớ, vỏ in 3D hộp radio và robot 50 cm." },
-    { date: "29/10/2026", text: "Đăng bản V4: đọc GPS bằng UBX-NAV-PVT, giữ độ cao kéo về mốc, tune xong giữ vị trí, thêm 2 sketch kiểm tra." },
-    { date: "29/10/2026", text: "Đăng bản V3: GPS GEP-M10 + la bàn IST8310, giữ vị trí ngoài trời, giữ hướng mũi, telemetry ELRS." },
-    { date: "29/10/2026", text: "Chuyển trang sang Vercel." },
-    { date: "",           text: "Đăng bản V2: thêm BMP388 giữ độ cao, chuyển sang bộ thu ELRS có telemetry về tay cầm." },
-    { date: "",           text: "Đăng bản V1: STM32F405 + ICM-20602, chỉ tự cân bằng." },
+    { date: "16/11/2026", project: "chatbot", title: "Đổi tên thành LingoBot, xoay ngang màn hình, đăng lên web",
+      details: [
+        "Đổi tên chatbot từ “Như Ý” thành <b>LingoBot</b> (khẩu hiệu: Robot đồng hành khám phá ngôn ngữ), sửa tên trên màn hình, trong vai trò AI và thư viện truyện.",
+        "Làm giao diện ngang 480×320 cho bản robot: thanh nút nằm dưới đáy (NÓI, TO, NHỎ, HOME, PAUSE, RESET), khung chat có cột avatar bên trái.",
+        "Thêm công tắc <code>LINGOBOT_FLIP_180</code> để lật màn 180° nếu lắp ngược.",
+        "Đăng trang dự án LingoBot cùng firmware, file in 3D và thư viện truyện.",
+      ] },
+    { date: "16/11/2026", project: "web", title: "Thêm ESC và chi tiết từng linh kiện cho các trang drone",
+      details: [
+        "Thêm ESC LANRC 45A (BLHeli_S, 2–6S) vào phần linh kiện V1–V4.",
+        "Mỗi linh kiện có ảnh riêng kèm thông số, công dụng và lưu ý khi lắp.",
+      ] },
+    { date: "15/11/2026", project: "chatbot", title: "Hoàn thành hộp radio, thu nhỏ robot còn 50 cm",
+      details: [
+        "In xong và lắp hoàn chỉnh vỏ kiểu đài radio (PETG).",
+        "Thu nhỏ robot từ 60 cm xuống 50 cm, màn hình đặt nằm ngang làm khuôn mặt. Phần lắp màn, loa và lỗ USB giữ đúng kích thước thật.",
+        "Robot vẫn chia 15 mảnh, mảnh lớn nhất 109×109×195 mm để vừa máy in 260×260×300 mm.",
+      ] },
+    { date: "14/11/2026", project: "chatbot", title: "Viết báo cáo KHKT và hướng dẫn sử dụng",
+      details: [
+        "Viết lại báo cáo nghiên cứu còn khoảng 20 trang, phần mô hình là hộp radio.",
+        "Tính chi phí thật: ESP32-S3 167k, màn hình 400k, thẻ nhớ 200k, nhựa 130k; tổng khoảng 1,09 triệu đồng.",
+        "Viết bản hướng dẫn sử dụng cho người dùng.",
+      ] },
+    { date: "13/11/2026", project: "chatbot", title: "Thiết kế robot 60 cm, học dùng máy in 3D",
+      details: [
+        "Vẽ robot cao 60 cm chia 15 mảnh, ghép bằng chốt sợi nhựa và keo.",
+        "Làm quen máy in Creality Hi Combo và Orca Slicer: nhân bản chi tiết, lật chi tiết, gửi file qua mạng.",
+        "Lỗi gửi file HTTP 404: phải chọn kiểu máy chủ là <b>CrealityPrint</b> thay vì Octo/Klipper.",
+        "Máy hủy lệnh in vì file cắt lớp cho PLA trong khi máy khai báo PETG. Cắt lại bằng hồ sơ Creality Generic PETG thì in được.",
+      ] },
+    { date: "12/11/2026", project: "chatbot", title: "Nút Đổi WiFi và vỏ hộp kiểu đài radio",
+      details: [
+        "Thêm nút “Đổi WiFi” ngay trên màn hình chính để đưa máy về chế độ cài mạng, không cần nạp lại firmware.",
+        "Thiết kế vỏ in 3D kiểu đài radio 200×140×72 mm. Bản đầu khung màn hình nhỏ hơn màn thật và chỉ có mặt trước, nên đã sửa lại khung và thêm nắp sau, núm vặn.",
+      ] },
+    { date: "11/11/2026", project: "chatbot", title: "Màn cảm ứng, giao diện mới, thư viện truyện và nhạc thẻ nhớ",
+      details: [
+        "Viết driver cảm ứng XPT2046 để chạm màn hình thay cho nút BOOT, có bước hiệu chỉnh 3 điểm lưu vào bộ nhớ.",
+        "Giao diện mới: cột nút bên trái (Nói, To, Nhỏ, Reset) và hình bạn học sinh. Màn hình chính là khuôn mặt, chạm vào thì hiện menu Kể chuyện / Học / Nghe nhạc / Trở về.",
+        "Lỗi chữ “Lala School” tự hiện lên khi không ai nói (nhận dạng giọng nói đoán nhầm tiếng ồn): lọc ngay trên máy và thêm luật trong vai trò AI.",
+        "Làm thư viện 20 truyện ngắn và 20 bài hát tiếng Anh, tải lên Knowledge Base.",
+        "Nút Nghe nhạc bị AI hiểu thành kể chuyện: viết lại câu lệnh và đổi sang model Qwen.",
+        "Phát nhạc MP3 từ thẻ nhớ bằng giọng nói. Lỗi thẻ ESP_ERR_TIMEOUT do dây, sửa dây thì nhận thẻ.",
+        "Thêm nút HOME và PAUSE. Sửa lỗi “không tìm thấy bài” khi chỉ nói “phát một bài nhạc tiếng Anh”: giờ máy sẽ phát ngẫu nhiên.",
+      ] },
+    { date: "10/11/2026", project: "chatbot", title: "Chuyển sang firmware xiaozhi",
+      details: [
+        "Thử riêng micro và loa bằng sketch kiểm tra âm thanh, đặt nhân vật trợ lý là một nữ sinh tên Như Ý.",
+        "Chuyển từ bản Arduino sang firmware mã nguồn mở xiaozhi-esp32, build bằng GitHub Actions và nạp bằng ESP Tool trên trình duyệt.",
+        "Màn hình trắng, không hiện chữ: sửa cấu hình màn ST7796 320×480.",
+        "Không nghe được giọng nói: thay micro INMP441 thì chạy. Cài tiếng Việt, giọng nữ trên xiaozhi.me.",
+      ] },
+    { date: "09/11/2026", project: "chatbot", title: "Viết báo cáo nghiên cứu bản đầu",
+      details: [
+        "Tìm hiểu ESP32-S3, mô hình ngôn ngữ lớn, nhận dạng và tổng hợp giọng nói; viết báo cáo nghiên cứu sản phẩm bản đầu tiên.",
+      ] },
+    { date: "06/11/2026", project: "chatbot", title: "Bắt đầu dự án chatbot học tiếng Anh",
+      details: [
+        "Linh kiện: ESP32-S3 N16R8, màn hình 4 inch ST7796 có cảm ứng và khe thẻ nhớ, micro INMP441, ampli MAX98357A và loa.",
+        "Bản đầu viết bằng Arduino, gọi thẳng Gemini API để nghe, hiểu và trả lời.",
+        "Bản này phải tự lo phần chuyển giọng nói thành chữ và chữ thành giọng nói, phản hồi chậm. Đó là lý do sau này chuyển sang xiaozhi.",
+      ] },
+    { date: "29/10/2026", project: "drone", title: "Đăng bản V4 — GPS hoàn thiện",
+      details: [
+        "Đọc GPS bằng gói nhị phân UBX-NAV-PVT thay cho NMEA, có vận tốc Bắc/Đông kể cả khi gần đứng yên.",
+        "Điều kiện GPS tốt tính bằng sai số ngang hAcc &lt; 2,5 m thay cho HDOP.",
+        "Giữ độ cao kéo về đúng mốc lúc bật, cần ga chỉnh độ cao có vùng chết.",
+        "Giữ vị trí đủ 3 bước: hãm, chống gió, kéo về điểm cũ; giới hạn nghiêng 12°.",
+        "Hiệu chuẩn lại la bàn đủ ma trận. Bộ trộn motor ưu tiên roll/pitch để yaw không chiếm chỗ.",
+        "Thêm 2 sketch kiểm tra: F405_drone_test và F405_IST8310_M10_test.",
+        "Bài học: bộ số giữ vị trí 0.5/0.05 quá lớn, nhiễu GPS 10 cm/s đã làm drone nghiêng 5° và giật liên tục.",
+      ] },
+    { date: "29/10/2026", project: "drone", title: "Đăng bản V3 — GPS + la bàn",
+      details: [
+        "Thêm GPS GEP-M10 (u-blox M10) và la bàn IST8310 để giữ vị trí ngoài trời và giữ hướng mũi.",
+        "Công tắc kênh 7 có 3 nấc STAB / ALT / POS. Thêm đèn báo GPS ở PB5.",
+        "Telemetry về tay cầm thêm toạ độ, số vệ tinh, tốc độ GPS.",
+        "Hệ số giữ vị trí để ở mức an toàn, chưa tune xong (hoàn thiện ở V4).",
+      ] },
+    { date: "29/10/2026", project: "web", title: "Chuyển trang sang Vercel", details: [] },
+    { date: "", project: "drone", title: "Đăng bản V2 — giữ độ cao",
+      details: [
+        "Thêm cảm biến áp suất BMP388 (che mút) để giữ độ cao bằng công tắc.",
+        "Đổi bộ thu sang ExpressLRS (CRSF) và tay RadioMaster Pocket: góc, độ cao, chế độ bay hiện ngay trên tay cầm.",
+        "Kênh 5 dùng để ARM, kênh 7 chọn chế độ bay.",
+        "Drone vẫn trôi ngang theo gió.",
+      ] },
+    { date: "", project: "drone", title: "Đăng bản V1 — tự cân bằng",
+      details: [
+        "Tự thiết kế bo mạch điều khiển bay STM32F405 + ICM-20602, firmware tự viết trên STM32duino.",
+        "Bộ lọc Kalman trộn con quay và gia tốc kế; PID tầng góc → tốc độ quay → bộ trộn 4 motor; lọc rung biquad 60 Hz.",
+        "Tay FS-i6 + bộ thu FS-iA6B qua 1 dây PPM; gửi số liệu qua Bluetooth DL-20 để tune PID trên web.",
+        "Giữ được thăng bằng, nhưng độ cao do tay ga, buông ga là tụt.",
+      ] },
   ],
 
   /* Ảnh linh kiện — file nằm trong .
@@ -165,6 +255,27 @@ const SITE = {
   });
 
   const log = document.getElementById("log-list");
-  if (log) log.innerHTML = SITE.log.map((l) =>
-    `<li><time>${l.date || "—"}</time><span>${l.text}</span></li>`).join("");
+  if (log) {
+    const names = { chatbot: "Chatbot LingoBot", drone: "Drone", web: "Trang web" };
+    const draw = (f) => {
+      log.innerHTML = SITE.log.filter((l) => f === "all" || l.project === f).map((l) => `<li>
+        <time>${l.date || "—"}</time>
+        <div><span class="tag proj-${l.project || "web"}">${names[l.project] || "Trang web"}</span>
+          <b>${l.title || l.text}</b>
+          ${l.details && l.details.length ? `<ul>${l.details.map((d) => `<li>${d}</li>`).join("")}</ul>` : ""}
+        </div></li>`).join("");
+    };
+    const bar = document.getElementById("log-filter");
+    if (bar) {
+      bar.innerHTML = [["all", "Tất cả"], ["chatbot", "Chatbot LingoBot"], ["drone", "Drone"]]
+        .map(([k, t]) => `<button data-f="${k}"${k === "all" ? ' class="on"' : ""}>${t}</button>`).join("");
+      bar.onclick = (e) => {
+        const k = e.target.dataset && e.target.dataset.f; if (!k) return;
+        bar.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === e.target));
+        draw(k);
+      };
+    }
+    draw(location.hash === "#drone" ? "drone" : location.hash === "#chatbot" ? "chatbot" : "all");
+    if (bar && location.hash) bar.querySelectorAll("button").forEach((b) => b.classList.toggle("on", "#" + b.dataset.f === location.hash));
+  }
 })();

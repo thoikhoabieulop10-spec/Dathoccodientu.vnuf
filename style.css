@@ -150,3 +150,17 @@ td code, p code, li code { background: #f2f4f7; padding: 1px 5px; border-radius:
 @media (max-width: 520px) {
   .part { grid-template-columns: 110px 1fr; gap: 12px; }
 }
+
+/* ---- nhật ký chi tiết ---- */
+#log-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+#log-filter button {
+  font: inherit; font-size: 13px; padding: 4px 12px; border-radius: 14px; cursor: pointer;
+  border: 1px solid var(--line); background: #fff; color: var(--ink);
+}
+#log-filter button.on { background: var(--bar); color: #fff; border-color: var(--bar); }
+.log > li > div > b { display: block; margin: 2px 0 2px; }
+.log ul { margin: 4px 0 0; padding-left: 18px; font-size: 14px; }
+.log ul li { display: list-item; margin: 3px 0; padding: 0; border: 0; }
+.tag.proj-chatbot { background: #e3efff; color: #1a5fa8; }
+.tag.proj-drone { background: #ffeede; color: #a35200; }
+.tag.proj-web { background: #e8ecf1; color: #59636e; }
