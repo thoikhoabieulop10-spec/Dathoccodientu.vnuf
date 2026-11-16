@@ -18,8 +18,8 @@
     <p>LingoBot là một “bạn cùng lớp” giúp luyện nói tiếng Anh. Máy nghe, hiểu và nói được cả tiếng Việt lẫn tiếng Anh. Nó dạy từ vựng, sửa lỗi phát âm, kể chuyện tiếng Anh và phát nhạc từ thẻ nhớ. Bản thân thiết bị chỉ thu âm, hiển thị và phát loa. Nhận dạng giọng nói, mô hình ngôn ngữ (Qwen) và đọc giọng nói đều chạy trên máy chủ <a href="https://xiaozhi.me" target="_blank" rel="noopener">xiaozhi.me</a>, nên phần cứng rất rẻ.</p>
 
     <div class="photos">
-      <figure><img src="lingobot-files/giao-dien-ngang.jpg" alt="Giao diện ngang LingoBot" width="980" height="660" loading="lazy"><figcaption>Giao diện ngang 480×320 (bản robot): màn chính, menu, khung chat</figcaption></figure>
-      <figure><img src="lingobot-files/mach-thuc-te.jpg" alt="Mạch thực tế LingoBot" width="912" height="700" loading="lazy"><figcaption>Mạch thực tế khi đang chạy</figcaption></figure>
+      <figure><img src="giao-dien-ngang.jpg" alt="Giao diện ngang LingoBot" width="980" height="660" loading="lazy"><figcaption>Giao diện ngang 480×320 (bản robot): màn chính, menu, khung chat</figcaption></figure>
+      <figure><img src="mach-thuc-te.jpg" alt="Mạch thực tế LingoBot" width="912" height="700" loading="lazy"><figcaption>Mạch thực tế khi đang chạy</figcaption></figure>
     </div>
     <!-- Có video TikTok thì bỏ dấu chú thích dòng dưới và dán link vào -->
     <!-- <p class="tiktok-links">▶ Xem video trên TikTok: <a href="LINK_VIDEO" target="_blank" rel="noopener">video 1</a></p> -->
@@ -32,8 +32,8 @@
       <li><b>Giao diện cảm ứng</b>: khuôn mặt biểu cảm, các nút Nói / Âm lượng / Home / Pause / Reset / Đổi WiFi.</li>
     </ul>
     <div class="photos">
-      <figure><img src="lingobot-files/so-do-he-thong.jpg" alt="Sơ đồ khối hệ thống" width="1200" height="681" loading="lazy"><figcaption>Sơ đồ khối: ESP32-S3 ↔ máy chủ xiaozhi.me (ASR → LLM → TTS)</figcaption></figure>
-      <figure><img src="lingobot-files/giao-dien-doc.jpg" alt="Giao diện dọc LingoBot" width="1000" height="480" loading="lazy"><figcaption>Giao diện dọc 320×480 (bản hộp radio)</figcaption></figure>
+      <figure><img src="so-do-he-thong.jpg" alt="Sơ đồ khối hệ thống" width="1200" height="681" loading="lazy"><figcaption>Sơ đồ khối: ESP32-S3 ↔ máy chủ xiaozhi.me (ASR → LLM → TTS)</figcaption></figure>
+      <figure><img src="giao-dien-doc.jpg" alt="Giao diện dọc LingoBot" width="1000" height="480" loading="lazy"><figcaption>Giao diện dọc 320×480 (bản hộp radio)</figcaption></figure>
     </div>
 
     <h2>Linh kiện</h2>
@@ -80,8 +80,8 @@
 
     <h2>Vỏ in 3D</h2>
     <div class="photos">
-      <figure><img src="lingobot-files/hop-radio-3d.jpg" alt="Hộp kiểu đài radio" width="1060" height="490" loading="lazy"><figcaption>Hộp đài radio 200×140×72 mm, 3 mảnh, ~7 giờ in</figcaption></figure>
-      <figure><img src="lingobot-files/robot-50cm-3d.jpg" alt="Robot LingoBot 50 cm" width="1400" height="570" loading="lazy"><figcaption>Robot cao 50 cm, 15 mảnh, màn hình nằm ngang làm khuôn mặt</figcaption></figure>
+      <figure><img src="hop-radio-3d.jpg" alt="Hộp kiểu đài radio" width="1060" height="490" loading="lazy"><figcaption>Hộp đài radio 200×140×72 mm, 3 mảnh, ~7 giờ in</figcaption></figure>
+      <figure><img src="robot-50cm-3d.jpg" alt="Robot LingoBot 50 cm" width="1400" height="570" loading="lazy"><figcaption>Robot cao 50 cm, 15 mảnh, màn hình nằm ngang làm khuôn mặt</figcaption></figure>
     </div>
     <p>In bằng Orca Slicer, nhựa PETG, lớp 0,2 mm, độ đặc 15%. Hộp radio thì úp mặt trước xuống bàn, không cần support. Robot thì in từng mảnh (mảnh lớn nhất 109×109×195 mm), ghép bằng chốt sợi nhựa 1,75 mm và keo, tốn khoảng 1,5 kg nhựa.</p>
     <div class="warn">Loại nhựa chọn trong slicer phải trùng với loại nhựa khai báo trên máy in, nếu không máy sẽ từ chối in. Với Creality Hi, chọn host <b>CrealityPrint</b> để gửi file qua mạng.</div>
@@ -98,11 +98,11 @@
 
     <h2>Tài liệu &amp; mã nguồn</h2>
     <ul class="downloads">
-      <li><a href="lingobot-files/LingoBot_firmware.zip">LingoBot_firmware.zip</a> — firmware xiaozhi tùy biến, có bản dọc (hộp radio) và bản ngang (robot)</li>
-      <li><a href="lingobot-files/LingoBot_hop_radio_3D.zip">LingoBot_hop_radio_3D.zip</a> — 3 file STL vỏ đài radio + file nguồn Python</li>
-      <li><a href="lingobot-files/LingoBot_robot_50cm_3D.zip">LingoBot_robot_50cm_3D.zip</a> — 15 file STL robot 50 cm + file nguồn Python</li>
-      <li><a href="lingobot-files/ThuVien_LingoBot.txt">ThuVien_LingoBot.txt</a> — 20 truyện tiếng Anh + danh sách bài hát (tải lên Knowledge Base)</li>
-      <li><a href="lingobot-files/LingoBot_20_bai_nhac_thieu_nhi.zip">LingoBot_20_bai_nhac_thieu_nhi.zip</a> — 20 giai điệu thiếu nhi dân gian (MP3 không lời) để thử thẻ nhớ</li>
+      <li><a href="LingoBot_firmware.zip">LingoBot_firmware.zip</a> — firmware xiaozhi tùy biến, có bản dọc (hộp radio) và bản ngang (robot)</li>
+      <li><a href="LingoBot_hop_radio_3D.zip">LingoBot_hop_radio_3D.zip</a> — 3 file STL vỏ đài radio + file nguồn Python</li>
+      <li><a href="LingoBot_robot_50cm_3D.zip">LingoBot_robot_50cm_3D.zip</a> — 15 file STL robot 50 cm + file nguồn Python</li>
+      <li><a href="ThuVien_LingoBot.txt">ThuVien_LingoBot.txt</a> — 20 truyện tiếng Anh + danh sách bài hát (tải lên Knowledge Base)</li>
+      <li><a href="LingoBot_20_bai_nhac_thieu_nhi.zip">LingoBot_20_bai_nhac_thieu_nhi.zip</a> — 20 giai điệu thiếu nhi dân gian (MP3 không lời) để thử thẻ nhớ</li>
     </ul>
     <p style="font-size:13px;color:var(--muted)">Dựa trên mã nguồn mở <a href="https://github.com/78/xiaozhi-esp32" target="_blank" rel="noopener">xiaozhi-esp32</a>, <a href="https://lvgl.io" target="_blank" rel="noopener">LVGL</a> và <a href="https://github.com/lieff/minimp3" target="_blank" rel="noopener">minimp3</a>.</p>
   </main>
